@@ -52,7 +52,7 @@ npm install
 ```
 mkdir data
 cd data
-git clone https://github.com/Lesterpig/openparty-examples.git
+git clone https://github.com/Lesterpig/openparty-examples.git ./
 ```
 
 ### Start the server!
