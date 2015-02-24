@@ -37,13 +37,22 @@ How to install ?
 You'll have to download the source code, and then download additionnal gameplay definitions.
 Please note that Open-Party **is not tested under Windows**. We suggest you to install it under Unix distributions.
 
+### Install node.js & npm
+
+Refer to node.js documentation for more details.
+On debian :
+
+```
+sudo apt-get install nodejs nodejs-legacy git curl
+curl -L https://npmjs.com/install.sh | sh
+```
+
 ### Install Open-Party
 
 ```
-sudo apt-get install nodejs git
 git clone https://github.com/Lesterpig/openparty.git
 cd openparty
-cp config/config_sample.js config.js
+cp config/config_sample.js config/config.js
 npm install
 ```
 
@@ -51,8 +60,7 @@ npm install
 
 ```
 mkdir data
-cd data
-git clone https://github.com/Lesterpig/openparty-examples.git ./
+git clone https://github.com/Lesterpig/openparty-examples.git data
 ```
 
 ### Start the server!
