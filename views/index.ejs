@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html ng-app="openparty">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>OpenParty</title>
+    
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/main.css"> 
+
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
+    
+  </head>
+  <body ng-controller="controller" class="ng-cloak">
+
+    <div class="container-fluid ng-cloak" style="margin-top:20px" ng-show="status == 0">
+      <div class="jumbotron">
+        <h2>Welcome on OpenParty!</h2>
+        <p>Please provide some credentials to access the lobby.</p>
+        <div class="alert alert-danger" role="alert" ng-show="loginErrorMessage">
+          <strong>{{ loginErrorMessage }}</strong>
+        </div>
+        <form role="form" ng-submit="loginSubmit()">
+          <div class="form-group">
+            <label for="usernameInput">Username</label>
+            <input type="text" class="form-control" id="usernameInput" placeholder="" ng-model="username">
+          </div>
+          <div class="form-group {{ loginError }}" ng-show="<%= passwordRequired %>">
+            <label for="passwordInput">Server password</label>
+            <input type="password" class="form-control" id="passwordInput" placeholder="" ng-model="password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg">Enter!</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="container-fluid ng-cloak" style="margin-top:20px" ng-show="status == -1">
+      <div class="alert alert-danger" role="alert">
+        <h4><strong>Something went wrong...</strong></h4>
+        <p>Connection with server has been interrupted. Don't panic ! We (probably) are trying to solve the problem.</p>
+        <p>Please check that you are correctly linked to internet and that the server is running.</p>
+      </div>
+    </div>
+
+    <div class="container-fluid ng-cloak" ng-show="status == 1">
+      <div class="page-header">
+        <h1>Lobby <small>OpenParty - Welcome {{ username }}!</small></h1>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="panel panel-default" ng-show="joinedRoom == null">
+            <div class="panel-heading">Open new room</div>
+            <div class="panel-body">
+              <form role="form" ng-submit="createRoom()">
+                <div class="form-group">
+                  <label for="roomNameInput">Name</label>
+                  <input type="text" class="form-control" id="roomNameInput" placeholder="" ng-model="roomName"/>
+                </div>
+                <div class="form-group">
+                  <label for="roomNameInput">Type</label>
+                  <select ng-options="key as type.name for (key,type) in gametypes" class="form-control" ng-model="roomType">
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+                <span style="font-size:10px">
+                  <span class="glyphicon glyphicon-flash"></span> Ping : {{ping}} &nbsp;
+                  <span class="glyphicon glyphicon-user"></span> Users : {{users}}
+                </span>
+              </form>
+            </div>
+          </div>
+
+          <div class="panel panel-default" ng-show="joinedRoom != null">
+            <div class="panel-heading">
+              Room parameters
+              <button class="btn btn-xs btn-link" ng-click="showMasterParams = !showMasterParams;">
+                Hide/Show
+              </button>
+            </div>
+            <div class="panel-body" ng-show="showMasterParams">
+              Seats : {{ joinedRoom.size }}
+              <button class="btn btn-default btn-xs" ng-click="incSize(-1)" ng-disabled="!isMaster">
+                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+              </button>
+              <button class="btn btn-default btn-xs" ng-click="incSize(1)" ng-disabled="!isMaster">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+              </button>
+
+              <br /><br />
+
+              <div class="form-group" ng-repeat="parameter in joinedRoom.gameplay.parameters">
+                <label>{{ parameter.name }}</label>
+                <input type="text" class="form-control" ng-model="localParams[$index]" ng-change="changeParameter(joinedRoom.gameplay.parameters[$index].name, localParams[$index]);" ng-disabled="!isMaster"/>
+              </div>
+
+              <br />
+              <button class="btn btn-danger" ng-click="leaveRoom()">Leave</button>
+              <button class="btn btn-success" ng-if="isMaster" ng-click="startRoom()" ng-disabled="joinedRoom.players.length < joinedRoom.size"><b>Start!</b></button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+
+          <div class="alert alert-info" role="alert" ng-show="rooms.length == 0">
+            No room is currently available :(
+          </div>
+
+          <div class="list-group">
+            <a href="#" class="list-group-item" ng-repeat="room in rooms" ng-click="changeSelectedRoom(room.id)">
+              <div class="row">
+                <div class="col-xs-4"><b>{{ room.name }}</b></div>
+                <div class="col-xs-2"><i>By {{ room.players[0].username }}</i></div>
+                <div class="col-xs-5">{{ room.gameplay.name }}</div>
+                <div class="col-xs-1"><span class="badge">{{ room.players.length }}/{{ room.size }}</span></div>
+              </div>
+              <div class="row" ng-show="room.id == selectedRoom">
+                <div class="col-xs-4">
+                  <div class="btn btn-primary btn-xs" ng-show="joinedRoom == null" ng-click="joinRoom(room.id)">Join!</div>
+                </div>              
+                <div class="col-xs-8">
+                  <i>Players: <span ng-repeat="player in room.players">{{ player.username }} </span></i><br />
+                  {{ room.gameplay.description }}
+                </div>
+              </div>
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="row" ng-show="joinedRoom != null">
+        <div class="col-sm-5 col-md-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">Players</div>
+            <div class="panel-body">
+              <ul class="list-unstyled">
+                <li ng-repeat="player in joinedRoom.players"><strong>{{ player.username }}</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-7 col-md-9">
+          <pre id="preChat" ng-bind-html="preChat" scroll-glue></pre>
+          <input type="text" class="form-control" placeholder="Type a message here..." ng-model="chatMessage" ng-keydown="keyChat($event, true)"/>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div class="container-fluid ng-cloak" style="margin-top:20px; height: 90vh;" ng-show="status == 2">
+
+      <div class="col-md-3">
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              <button class="btn btn-link btn-xs" ng-click="leaveRoom()">
+                <span class="glyphicon glyphicon-log-out"></span>
+              </button>
+              {{ joinedRoom.name }}
+            </h3>
+          </div>
+          <div class="panel-body" ng-bind-html="gameInfo"></div>
+          <div class="container-fluid text-center">
+            <h4>{{ remainingTime.min }} : {{ remainingTime.sec }}</h4>
+
+            <div ng-repeat="(name, action) in actions" ng-switch="action.type">
+              <div ng-switch-when="button" style="margin-bottom:10px;">
+                <button class="btn btn-primary btn-sm" ng-click="executeAction(name)">{{ action.options.submit }}</button>
+              </div>
+              <div ng-switch-when="select" style="margin-bottom:10px;">
+                <form class="form-inline" ng-submit="executeAction(name)">
+                  <select ng-options="value for value in action.options.safeChoices" class="form-control input-sm" ng-model="actionsValues[name]"></select>
+                  <input type="submit" class="btn btn-primary btn-sm" value="{{ action.options.submit }}"/>
+                </form>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <ul class="list-unstyled">
+              <li ng-repeat="player in joinedRoom.players"><strong>{{ player.username }}</strong></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-9" style="height:100%">
+        <div class="well well-sm" style="height:80%; overflow:auto;" ng-bind-html="gameChat" scroll-glue></div>
+
+        <div class="container-fluid">
+          <div class="col-md-9 col-lg-10">
+            <input type="text" class="form-control" placeholder="Type a message here..." ng-model="chatMessage" ng-keydown="keyChat($event)"/>
+          </div>
+          <div class="col-md-3 col-lg-2">
+            <select ng-model="selectedChannel" class="form-control" ng-options="k as v.n for (k, v) in channels"></select>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-sanitize.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/socket.min.js"></script>
+    <script src="js/glue.js"></script>
+    
+    <script src="js/controller.js"></script>
+  </body>
+</html>
