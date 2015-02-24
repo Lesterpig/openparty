@@ -59,7 +59,6 @@ npm install
 ### Install example gameplays
 
 ```
-mkdir data
 git clone https://github.com/Lesterpig/openparty-examples.git data
 ```
 
