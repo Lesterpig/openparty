@@ -1,6 +1,8 @@
 Open-Party
 ==========
 
+[![Code Climate](https://codeclimate.com/github/Lesterpig/openparty/badges/gpa.svg)](https://codeclimate.com/github/Lesterpig/openparty) [![Build Status](https://travis-ci.org/Lesterpig/openparty.svg)](https://travis-ci.org/Lesterpig/openparty)
+
 This open-source project is a **simple** and **fast** framework for multiplayer chat games, written in clean javascript.
 It uses **node.js, socket.io & angular.js** technologies. It is able to create a webserver for that purpose.
 
