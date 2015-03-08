@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>OpenParty</title>
-    
+
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/main.css"> 
+    <link rel="stylesheet" href="css/main.css">
 
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
-    
+
   </head>
   <body ng-controller="controller" class="ng-cloak">
 
@@ -120,7 +120,7 @@
               <div class="row" ng-show="room.id == selectedRoom">
                 <div class="col-xs-4">
                   <div class="btn btn-primary btn-xs" ng-show="joinedRoom == null" ng-click="joinRoom(room.id)">Join!</div>
-                </div>              
+                </div>
                 <div class="col-xs-8">
                   <i>Players: <span ng-repeat="player in room.players">{{ player.username }} </span></i><br />
                   {{ room.gameplay.description }}
@@ -149,7 +149,7 @@
         </div>
       </div>
 
-      
+
     </div>
 
     <div class="container-fluid ng-cloak" style="margin-top:20px; height: 90vh;" ng-show="status == 2">
@@ -187,7 +187,7 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <ul class="list-unstyled">
-              <li ng-repeat="player in joinedRoom.players"><strong>{{ player.username }}</strong></li>
+              <li ng-repeat="player in joinedRoom.players" ng-bind-html="getPlayerInfos(player)"></li>
             </ul>
           </div>
         </div>
@@ -213,7 +213,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/socket.min.js"></script>
     <script src="js/glue.js"></script>
-    
+
     <script src="js/controller.js"></script>
   </body>
 </html>

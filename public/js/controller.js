@@ -13,7 +13,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
     $scope.gametypes        = {};
 
     // Live data
-    
+
     $scope.users = 0;
     $scope.lastPing = 0;
 
@@ -28,20 +28,31 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
     $scope.showMasterParams = true;
 
     // Game Chats
-    
+
     $scope.preChat = "";
     $scope.gameChat = "";
     $scope.channels = {};
 
     // Timer
-    
+
     $scope.timer = null;
     $scope.remainingTime = {raw: 0, min: "--", sec: "--"};
 
     // Actions
-    
+
     $scope.actions = {};
     $scope.actionsValues = {};
+
+    // Local data
+
+    $scope.playersInfos = {};
+
+    $scope.getPlayerInfos  = function(player) {
+        if(!$scope.playersInfos[player.username]) {
+            return player.username;
+        }
+        return $scope.playersInfos[player.username];
+    };
 
     $scope.changeSelectedRoom = function(id) {
         $scope.selectedRoom = id;
@@ -103,7 +114,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
     }, 5000);
 
     // DISCONNECTION MANAGEMENT
-    
+
     socket.on("disconnect", function() {
         $scope.status = -1;
     });
@@ -113,7 +124,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
     });
 
     // DOWN
-    
+
     socket.on("pong", function() {
         $scope.ping = new Date().getTime() - $scope.lastPing;
     });
@@ -231,6 +242,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
         $scope.status = 2;
         $scope.gameInfo = "";
         $scope.gameChat = "";
+        $scope.playersInfos = {};
     });
 
     socket.on("setGameInfo", function(data) {
@@ -258,6 +270,10 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
                     $scope.actionsValues[action] = $scope.actions[action].options.safeChoices[0];
             }
         }
+    });
+
+    socket.on("playerInfo", function(data) {
+        $scope.playersInfos[data.username] = data.value;
     });
 
     $scope.writeTimer = function() {
