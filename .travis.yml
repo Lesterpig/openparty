@@ -1,5 +1,8 @@
 language: node_js
 sudo: false
+env:
+  global:
+    - secure: igEl4GdexOBIZvIRBXGxwIJMYbU36hXWKhUcoqEAFlJaY/EvywgnxUxCDhDaudkvTHFpuaSKb23Qo7tG2e9bQgdpI/JwlOtpLSDRQcp3misF7xxG14y8ZSiu/xnEWS2dccN6MfXrf6T3GwM5StkKD9qjKJL/vvwi8V/b08OpNcQ=
 node_js:
   - "0.12"
   - "0.11"
@@ -7,6 +10,7 @@ node_js:
   - "iojs"
 before_script:
   - "cp config/config_sample.js config/config.js"
+  - npm install -g codeclimate-test-reporter
 after_script:
   - ./node_modules/.bin/mocha -R mocha-lcov-reporter -r blanket > lcov.info
   - cat lcov.info | codeclimate
