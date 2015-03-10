@@ -3,7 +3,7 @@ var app = require("../app.js");
 var request = require("supertest");
 var path = require("path");
 
-describe("Main Page", function() {
+describe("Static pages", function() {
 
   before(function(done) {
     __conf.dataPath = path.join(__dirname, "data");
@@ -20,6 +20,14 @@ describe("Main Page", function() {
 
     request(__app)
       .get('/')
+      .expect(200, done);
+
+  });
+
+  it("should return the about page", function(done) {
+
+    request(__app)
+      .get('/about')
       .expect(200, done);
 
   });

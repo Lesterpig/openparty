@@ -4,8 +4,8 @@ module.exports = function() {
         name: "Test",
         description: "A Test Gamepley",
 
-        minPlayers: 6,
-        maxPlayers: 30,
+        minPlayers: 4,
+        maxPlayers: 6,
 
         parameters: [
             {

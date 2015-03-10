@@ -37,6 +37,13 @@ describe("Lobby Scenario", function() {
     }
   });
 
+  it("should ping", function(done) {
+
+    clients[0].on("pong", done);
+    clients[0].emit("ping");
+
+  });
+
   it("should refuse wrong username", function(done) {
 
     var nbHandled = 0;
@@ -74,7 +81,7 @@ describe("Lobby Scenario", function() {
 
       client.on("loginResult", handleLogged);
       client.emit("login", {username: "test_"+i, password: __conf.password});
-      
+
     }
     clients[4].on("loginResult", handleLogged);
     clients[4].emit("login", {username: "a"});
@@ -83,6 +90,15 @@ describe("Lobby Scenario", function() {
     clients[4].emit("login", {username: "test_0", password: __conf.password});
     clients[4].emit("login", {username: "tEsT_0", password: __conf.password});
     clients[4].emit("login", {username: " teSt_0  ", password: __conf.password});
+  });
+
+  it("should not create room if invalid gameplay", function() {
+
+    clients[1].on("roomCreated", function() {
+      throw new Error();
+    });
+    clients[0].emit("createRoom", {name: "Test Room", type: "invalid_gameplay"});
+
   });
 
   it("should create room only if connected", function(done) {
@@ -105,15 +121,29 @@ describe("Lobby Scenario", function() {
 
   });
 
+  it("should not create multiple rooms", function() {
+
+    clients[1].on("roomCreated", function() {
+      throw new Error();
+    });
+    clients[0].emit("createRoom", {name: "Test Room 2", type: "default"});
+
+  });
+
   it("should get open rooms", function(done) {
 
-    clients[3].emit("getRooms");
+    clients[4].on("roomsList", function() {
+      throw new Error();
+    });
     clients[3].on("roomsList", function(rooms) {
       equals(1, rooms.length);
       equals("Test Room", rooms[0].name);
       roomId1 = rooms[0].id;
       done();
     });
+
+    clients[3].emit("getRooms");
+    clients[4].emit("getRooms");
 
   });
 
@@ -124,17 +154,23 @@ describe("Lobby Scenario", function() {
       equals(roomId1, room.id);
       if(++nbJoin === 2) done();
     }
-
-    clients[1].emit("joinRoom", roomId1);
     clients[1].on("roomJoined", handleJoin);
-
-    clients[2].emit("joinRoom", roomId1);
     clients[2].on("roomJoined", handleJoin);
-
-    clients[4].emit("joinRoom", roomId1);
     clients[4].on("roomJoined", function() {
       throw new Error("Should not be able to join a room!");
     });
+
+    clients[1].emit("joinRoom", roomId1);
+    clients[2].emit("joinRoom", roomId1);
+    clients[4].emit("joinRoom", roomId1);
+  });
+
+  it("should not join multiple rooms", function() {
+
+    clients[1].on("roomJoined", function() {
+      throw new Error();
+    });
+    clients[0].emit("joinRoom", roomId1);
 
   });
 
@@ -170,7 +206,7 @@ describe("Lobby Scenario", function() {
     });
 
     clients[0].emit("setRoomSize", def+1);
-    setTimeout(function() { clients[0].emit("setRoomSize", def); }, 20);
+    setTimeout(function() { clients[0].emit("setRoomSize", def); }, 50);
     clients[0].emit("setRoomSize", def-1); //should not react
     clients[1].emit("setRoomSize", def+2); //should not react
 
@@ -204,7 +240,7 @@ describe("Lobby Scenario", function() {
   });
 
   it("should broadcast chat messages in preChat and sanitize html", function(done) {
-    
+
     var nb = 0;
     clients[0].on("chatMessage", function(data) {
       if(nb === 0) {
@@ -236,6 +272,7 @@ describe("Lobby Scenario", function() {
 
   it("should leave room", function(done) {
 
+    clients[4].emit("leaveRoom"); // no effect
     clients[2].emit("leaveRoom");
     clients[2].on("roomLeft", function() {
       equals(2, require("../lib/rooms").rooms[0].players.length);

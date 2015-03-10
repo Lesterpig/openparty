@@ -3,7 +3,6 @@ var socket = require('socket.io-client');
 module.exports = {
 
     createClient: function(callback) {
-        
         var client = socket("http://localhost:"+__conf.port, {forceNew: true});
 
         client.on("connect", function() {
@@ -20,6 +19,6 @@ module.exports = {
         for(var i = 0; i < clients.length; i++) {
             this.clearEvents(clients[i]);
         }
-    } 
+    }
 
 }

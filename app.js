@@ -33,9 +33,15 @@ module.exports = {
     server: null,
 
     start: function(callback) {
-        require("./lib/loader.js")(__conf.dataPath, function(gametypes) {
-            if(Object.keys(gametypes).length === 0)
+        require("./lib/loader.js")(__conf.dataPath, function(err, gametypes) {
+            if(err) {
+                console.error(err);
+                process.exit();
+            }
+
+            if(Object.keys(gametypes).length === 0) {
                 return console.log("No gametype available. Please put some gametypes packages in data/ folder.".red);
+            }
 
             global.__gametypes = gametypes;
             global.__staticGametypes = {};
