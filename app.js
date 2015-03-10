@@ -10,6 +10,7 @@ var isMain  = !module.parent;
 
 global.__app  = app;
 global.__i18n = i18n.__; // Note : do not use this variable in modules
+global.__version = version;
 
 i18n.configure({
     locales: __conf.locales,

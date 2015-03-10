@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title><%= __("OpenParty") %> - <%= __("About") %></title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
+
+  </head>
+
+  <body>
+    <div class="container-fluid" style="margin-top:20px">
+      <div class="jumbotron">
+        <h2><%= __("Server status") %></h2>
+        <p><small>
+          <span class="glyphicon glyphicon-tag"></span> <%= __("Version:") %> <%= version %><br />
+          <span class="glyphicon glyphicon-star"></span> <%= __("Supported languages:") %> <%= locales %><br />
+          <span class="glyphicon glyphicon-file"></span> <%= __("Gamemodes:") %>
+            <% for(var i in gamemodes) { %>
+            <span class="label label-primary"><%= gamemodes[i].name %></span>
+            <% } %>
+        </small></p>
+        <hr />
+        <h2><%= __("About") %></h2>
+        <p><%= __("This website is powered by") %>
+           <a href="https://github.com/Lesterpig/openparty/">OpenParty</a>,
+           <%= __("an open-source framework for multiplayer chat games (GPL3).") %>
+           <%= __("Build your own server") %>
+           <a href="https://github.com/Lesterpig/openparty/blob/master/README.md#how-to-install-"><%= __("here!") %></a>
+        </p>
+
+        <p><small><span class="glyphicon glyphicon-heart"></span>
+          <a href="https://nodejs.org/">Node.js</a>,
+          <a href="http://socket.io/">Socket.io</a>,
+          <a href="https://angularjs.org/">Angular.js</a>,
+          <a href="http://getbootstrap.com/">Bootstrap</a> <%= __("and") %>
+          <a href="http://glyphicons.com/">Glyphicons</a>
+          </small>
+        </p>
+
+        <a class="btn btn-default" href="/"><span class="glyphicon glyphicon-home"></span> <%= __("Back") %></a>
+      </div>
+    </div>
+  </body>
+</html>

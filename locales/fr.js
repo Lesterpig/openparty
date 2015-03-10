@@ -36,5 +36,16 @@
   "Username is too long.": "Le nom d'utilisateur est trop long.",
   "Bad Credentials": "Mauvais identifiants.",
   "Username is invalid.": "Le pseudonyme est invalide.",
-  "Username is not available.": "Ce pseudonyme est déjà utilisé."
+  "Username is not available.": "Ce pseudonyme est déjà utilisé.",
+  "About": "A propos",
+  "Server status": "Statut du serveur",
+  "Version:": "Version :",
+  "Supported languages:": "Langages supportés :",
+  "This website is powered by": "Ce site web est propulsé par",
+  "an open-source framework for multiplayer chat games (GPL3).": "une solution open-source de jeux multijoueurs textuels (GPL3).",
+  "Build your own server": "Créez votre propre serveur",
+  "here!": "içi !",
+  "and": "et",
+  "Back": "Retour",
+  "Gamemodes:": "Modes de jeu :"
 }

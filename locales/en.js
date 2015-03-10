@@ -36,5 +36,16 @@
   "Username is too long.": "Username is too long.",
   "Bad Credentials": "Bad Credentials",
   "Username is invalid.": "Username is invalid.",
-  "Username is not available.": "Username is not available."
+  "Username is not available.": "Username is not available.",
+  "About": "About",
+  "Server status": "Server status",
+  "Version:": "Version:",
+  "Supported languages:": "Supported languages:",
+  "Gamemodes:": "Gamemodes:",
+  "This website is powered by": "This website is powered by",
+  "an open-source framework for multiplayer chat games (GPL3).": "an open-source framework for multiplayer chat games (GPL3).",
+  "Build your own server": "Build your own server",
+  "here!": "here!",
+  "and": "and",
+  "Back": "Back"
 }
