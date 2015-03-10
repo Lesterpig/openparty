@@ -9,7 +9,7 @@ var rooms   = require("./lib/rooms");
 var isMain  = !module.parent;
 
 global.__app  = app;
-global.__i18n = i18n; // Note : do not use this variable in modules
+global.__i18n = i18n.__; // Note : do not use this variable in modules
 
 i18n.configure({
     locales: __conf.locales,

@@ -32,5 +32,9 @@
     "one": "Player",
     "other": "Players"
   },
-  "Type a message here...": "Type a message here..."
+  "Type a message here...": "Type a message here...",
+  "Username is too long.": "Username is too long.",
+  "Bad Credentials": "Bad Credentials",
+  "Username is invalid.": "Username is invalid.",
+  "Username is not available.": "Username is not available."
 }
