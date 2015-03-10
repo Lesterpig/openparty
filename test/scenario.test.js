@@ -1,3 +1,4 @@
+require("blanket")();
 var app = require("../app.js");
 var clientManager = require("./utils/clients.js");
 var equals = require("assert").strictEqual;

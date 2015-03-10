@@ -4,7 +4,7 @@
   "description": "An open-source system for role based party-games.",
   "main": "app.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha -b -t 5000 -R mocha-spec-cov -r blanket && ./node_modules/.bin/mocha -R html-cov -r blanket > coverage.html",
+    "test": "./node_modules/.bin/mocha -b -t 5000 -R mocha-spec-cov && ./node_modules/.bin/mocha -R html-cov > coverage.html",
     "start": "node app"
   },
   "author": "Lesterpig",

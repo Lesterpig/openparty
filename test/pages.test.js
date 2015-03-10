@@ -1,3 +1,4 @@
+require("blanket")();
 var app = require("../app.js");
 var request = require("supertest");
 var path = require("path");
