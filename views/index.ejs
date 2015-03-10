@@ -136,7 +136,7 @@
       <div class="row" ng-show="joinedRoom != null">
         <div class="col-sm-5 col-md-3">
           <div class="panel panel-default">
-            <div class="panel-heading"><% __n("Player", "Players", 2) %></div>
+            <div class="panel-heading"><%= __n("Player", "Players", 2) %></div>
             <div class="panel-body">
               <ul class="list-unstyled">
                 <li ng-repeat="player in joinedRoom.players"><strong>{{ player.username }}</strong></li>

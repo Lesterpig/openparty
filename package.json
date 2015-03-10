@@ -4,7 +4,7 @@
   "description": "An open-source system for role based party-games.",
   "main": "app.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha -b -t 5000 -R mocha-spec-cov && ./node_modules/.bin/mocha -R html-cov > coverage.html",
+    "test": "./node_modules/.bin/mocha -b -t 5000 -R mocha-spec-cov -r blanket && ./node_modules/.bin/mocha -R html-cov -r blanket > coverage.html",
     "start": "node app"
   },
   "author": "Lesterpig",
@@ -19,6 +19,7 @@
   "devDependencies": {
     "blanket": "^1.1.6",
     "mocha": "^2.0.1",
+    "mocha-lcov-reporter": "0.0.2",
     "mocha-spec-cov": "0.0.3",
     "socket.io-client": "^1.2.1",
     "supertest": "^0.15.0"
