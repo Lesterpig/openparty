@@ -35,6 +35,7 @@ describe("Loader", function() {
     });
 
     it("should not accept wrong definition files", function(done) {
+        global.__version = "0.2.0";
         loader(path.join(__dirname, "wrongData"), function(err, data) {
             equals(null, data);
             assert(err);
