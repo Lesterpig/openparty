@@ -47,6 +47,9 @@ module.exports = {
             global.__staticGametypes = {};
             for(type in gametypes) {
                 __staticGametypes[type] = new gametypes[type]();
+                if(isMain) {
+                    console.log(("-- Successfully loaded gameplay file '" + type + "'").grey);
+                }
             }
 
             this.server = app.listen(__conf.port, __conf.bind, callback);
