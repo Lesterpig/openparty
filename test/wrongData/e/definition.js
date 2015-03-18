@@ -6,5 +6,6 @@ module.exports = function() {
     this.start = function() {};
     this.minPlayers = -2;
     this.maxPlayers = -4;
+    this.init = [];
 
 };
