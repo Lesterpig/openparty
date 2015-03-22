@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><%= __("OpenParty") %></title>
+    <title><%= __conf.name || __("OpenParty") %></title>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -18,7 +18,7 @@
 
     <div class="container-fluid ng-cloak" style="margin-top:20px" ng-show="status == 0">
       <div class="jumbotron">
-        <h2><%= __("Welcome on %s!", __("OpenParty")) %></h2>
+        <h2><%= __("Welcome on %s!", __conf.name || __("OpenParty")) %></h2>
         <p><%= __("Please provide some credentials to access the lobby.") %></p>
         <div class="alert alert-danger" role="alert" ng-show="loginErrorMessage">
           <strong>{{ loginErrorMessage }}</strong>
@@ -197,7 +197,7 @@
       <div class="col-md-9" style="height:100%">
         <div class="well well-sm" style="height:80%; overflow:auto;" ng-bind-html="gameChat" scroll-glue></div>
 
-        <div class="container-fluid">
+        <div class="container-fluid" ng-show="selectedChannel">
           <div class="col-md-9 col-lg-10">
             <input type="text" class="form-control" placeholder="<%= __("Type a message here...") %>" ng-model="chatMessage" ng-keydown="keyChat($event)"/>
           </div>

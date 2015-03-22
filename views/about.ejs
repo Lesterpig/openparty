@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><%= __("OpenParty") %> - <%= __("About") %></title>
+    <title><%= __conf.name || __("OpenParty") %> - <%= __("About") %></title>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -18,6 +18,11 @@
     <div class="container-fluid" style="margin-top:20px">
       <div class="jumbotron">
         <h2><%= __("Server status") %></h2>
+        <% if(__conf.description) { %>
+        <p>
+          <%- __conf.description %>
+        </p>
+        <% } %>
         <p><small>
           <span class="glyphicon glyphicon-tag"></span> <%= __("Version:") %> <%= version %><br />
           <span class="glyphicon glyphicon-star"></span> <%= __("Supported languages:") %> <%= locales %><br />

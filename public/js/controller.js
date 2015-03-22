@@ -200,6 +200,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
         $scope.isMaster   = false;
         $scope.preChat    = "";
         $scope.gameChat   = "";
+        $scope.gameInfo = "";
         $scope.status     = 1;
     });
 
@@ -211,7 +212,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
     socket.on("chatMessage", function(data) {
 
         if(data.sender)
-            data.sender += ": ";
+            data.sender = data.sender + " - ";
         else
             data.sender = "";
 
@@ -229,6 +230,14 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
 
         if(!$scope.selectedChannel && data.general)
             $scope.selectedChannel = "general";
+        else if(!data[$scope.selectedChannel] && !data.general) {
+            for(var i in data) {
+                $scope.selectedChannel = i;
+                return;
+            }
+            $scope.selectedChannel = null;
+        }
+
     });
 
     socket.on("clearChat", function() {
@@ -240,8 +249,6 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
 
     socket.on("gameStarted", function(room) {
         $scope.status = 2;
-        $scope.gameInfo = "";
-        $scope.gameChat = "";
         $scope.playersInfos = {};
     });
 
