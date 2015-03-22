@@ -269,6 +269,18 @@ describe("Game Scenario", function() {
       room.playerInfo(room.players[1], "Slave");
     });
 
+    it("should send some player information even if player object on param", function(done) {
+      var room = require("../lib/rooms").rooms[0];
+      var i = 0;
+      clients[0].on("playerInfo", function(data) {
+        if(++i === 2)
+          done();
+      });
+
+      room.playerInfo(room.players[0].player, "a");
+      room.playerInfo("b", room.players[0].player, "a");
+    });
+
   });
 
   describe("Actions", function() {
@@ -380,6 +392,14 @@ describe("Game Scenario", function() {
       var room = require("../lib/rooms").rooms[0];
       clients[0].on("clearTimer", done);
       room.nextStage("short");
+    });
+
+    it("should trigger callback", function(done) {
+      var room = require("../lib/rooms").rooms[0];
+      room.nextStage("infinite", function(err) {
+        equals(null, err);
+        done();
+      });
     });
 
   });

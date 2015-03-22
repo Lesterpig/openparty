@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/main.css">
-
+    <% __customCss.forEach(function(f) { %>
+    <link rel="stylesheet" href="css/<%= f %>">
+    <% }) %>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
 
   </head>

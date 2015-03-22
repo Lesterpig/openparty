@@ -43,10 +43,18 @@ module.exports = {
                 return console.log("No gametype available. Please put some gametypes packages in data/ folder.".red);
             }
 
-            global.__gametypes = gametypes;
+            global.__gametypes       = gametypes;
             global.__staticGametypes = {};
+            global.__customCss       = [];
             for(type in gametypes) {
                 __staticGametypes[type] = new gametypes[type]();
+
+                // Has CSS extensions ?
+                var css = __staticGametypes[type].css;
+                if(css) {
+                    __customCss = __customCss.concat(css);
+                }
+
                 if(isMain) {
                     console.log(("-- Successfully loaded gameplay file '" + type + "'").grey);
                 }
