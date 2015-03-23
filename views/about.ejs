@@ -24,11 +24,16 @@
         </p>
         <% } %>
         <p><small>
-          <span class="glyphicon glyphicon-tag"></span> <%= __("Version:") %> <%= version %><br />
+          <span class="glyphicon glyphicon-tag"></span> <%= __("Engine version:") %> <%= version %><br />
           <span class="glyphicon glyphicon-star"></span> <%= __("Supported languages:") %> <%= locales %><br />
           <span class="glyphicon glyphicon-file"></span> <%= __("Gamemodes:") %>
             <% for(var i in gamemodes) { %>
-            <span class="label label-primary"><%= gamemodes[i].name %></span>
+            <span class="label label-primary">
+              <%= gamemodes[i].name %>
+              <% if(gamemodes[i].version) { %>
+                v<%= gamemodes[i].version %>
+              <% } %>
+            </span>
             <% } %>
         </small></p>
         <hr />

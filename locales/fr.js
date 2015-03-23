@@ -44,8 +44,9 @@
   "This website is powered by": "Ce site web est propulsé par",
   "an open-source framework for multiplayer chat games (GPL3).": "une solution open-source de jeux multijoueurs textuels (GPL3).",
   "Build your own server": "Créez votre propre serveur",
-  "here!": "içi !",
+  "here!": "ici !",
   "and": "et",
   "Back": "Retour",
-  "Gamemodes:": "Modes de jeu :"
+  "Gamemodes:": "Modes de jeu :",
+  "Engine version:": "Version du moteur :"
 }

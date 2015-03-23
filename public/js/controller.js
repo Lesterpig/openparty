@@ -212,7 +212,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
     socket.on("chatMessage", function(data) {
 
         if(data.sender)
-            data.sender = data.sender + " - ";
+            data.sender = "<strong>" + data.sender + "</strong> : ";
         else
             data.sender = "";
 
