@@ -48,5 +48,6 @@
   "and": "et",
   "Back": "Retour",
   "Gamemodes:": "Modes de jeu :",
-  "Engine version:": "Version du moteur :"
+  "Engine version:": "Version du moteur :",
+  "You have to fill the room with several players before starting it.": "Vous devez remplir la salle avec différents joueurs avant de pouvoir la lancer."
 }

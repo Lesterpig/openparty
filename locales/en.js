@@ -47,5 +47,7 @@
   "Build your own server": "Build your own server",
   "here!": "here!",
   "and": "and",
-  "Back": "Back"
+  "Back": "Back",
+  "You have to fill the room with several players before starting it.": "You have to fill the room with several players before starting it.",
+  "Engine version:": "Engine version:"
 }

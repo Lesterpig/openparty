@@ -85,24 +85,39 @@
               </button>
             </div>
             <div class="panel-body" ng-show="showMasterParams">
-              <%= __("Seats") %> : {{ joinedRoom.size }}
-              <button class="btn btn-default btn-xs" ng-click="incSize(-1)" ng-disabled="!isMaster">
-                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-              </button>
-              <button class="btn btn-default btn-xs" ng-click="incSize(1)" ng-disabled="!isMaster">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-              </button>
 
-              <br /><br />
-
-              <div class="form-group" ng-repeat="parameter in joinedRoom.gameplay.parameters">
-                <label>{{ parameter.name }}</label>
-                <input type="text" class="form-control" ng-model="localParams[$index]" ng-change="changeParameter(joinedRoom.gameplay.parameters[$index].name, localParams[$index]);" ng-disabled="!isMaster"/>
+              <div class="alert alert-info" role="alert" ng-if="roomHelpMessage">
+                {{ roomHelpMessage }}
               </div>
+
+              <form class="form-horizontal">
+                <div class="form-group parameters-group">
+                  <label class="col-sm-7 control-label"> <%= __("Seats") %></label>
+                  <div class="col-sm-5">
+                    {{ joinedRoom.size }} / {{ joinedRoom.gameplay.maxPlayers }}
+                    <button class="btn btn-default btn-xs input-sm" ng-click="incSize(-1)" ng-disabled="!isMaster">
+                      <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                    </button>
+                    <button class="btn btn-default btn-xs input-sm" ng-click="incSize(1)" ng-disabled="!isMaster">
+                      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group parameters-group" ng-repeat="parameter in joinedRoom.gameplay.parameters">
+                  <label class="col-sm-7 control-label">
+                    {{ parameter.name }} &nbsp;
+                    <span ng-if="parameter.help" class="glyphicon glyphicon glyphicon-info-sign link" ng-click="printHelp(parameter.help)"></span>
+                  </label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control input-sm" ng-model="localParams[$index]" ng-change="changeParameter(joinedRoom.gameplay.parameters[$index].name, localParams[$index]);" ng-disabled="!isMaster"/>
+                  </div>
+                </div>
+              </form>
 
               <br />
               <button class="btn btn-danger" ng-click="leaveRoom()"><%= __("Leave") %></button>
               <button class="btn btn-success" ng-if="isMaster" ng-click="startRoom()" ng-disabled="joinedRoom.players.length < joinedRoom.size"><b><%= __("Start!") %></b></button>
+              <span class="glyphicon glyphicon glyphicon-info-sign link" ng-if="isMaster" ng-click='printHelp("<%= __("You have to fill the room with several players before starting it.") %>")'></span>
             </div>
           </div>
         </div>

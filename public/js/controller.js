@@ -47,6 +47,10 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
 
     $scope.playersInfos = {};
 
+    $scope.printHelp = function(help) {
+        $scope.roomHelpMessage = help;
+    };
+
     $scope.getPlayerInfos  = function(player) {
         if(!$scope.playersInfos[player.username]) {
             return player.username;
