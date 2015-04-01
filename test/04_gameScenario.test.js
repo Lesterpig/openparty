@@ -50,7 +50,7 @@ describe("Game Scenario", function() {
           done();
       });
       for(var i = 1; i < 4; i++) {
-          clients[i].emit("joinRoom", roomId);
+          clients[i].emit("joinRoom", {id: roomId});
       }
     };
 

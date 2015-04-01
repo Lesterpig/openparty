@@ -60,6 +60,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
 
     $scope.changeSelectedRoom = function(id) {
         $scope.selectedRoom = id;
+        $scope.invalidRoomPassword = false;
     };
 
     // UP
@@ -68,7 +69,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
     }
 
     $scope.createRoom = function() {
-        socket.emit("createRoom", {name: $scope.roomName, type: $scope.roomType});
+        socket.emit("createRoom", {name: $scope.roomName, type: $scope.roomType, password: $scope.roomPassword});
     }
 
     $scope.leaveRoom = function() {
@@ -79,8 +80,9 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
         socket.emit("startRoom");
     }
 
-    $scope.joinRoom = function(id) {
-        socket.emit("joinRoom", id)
+    $scope.joinRoom = function(id, password) {
+        $scope.invalidRoomPassword = false;
+        socket.emit("joinRoom", {id: id, password: password});
     }
 
     $scope.incSize = function(inc) {
@@ -197,6 +199,10 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
         $scope.joinedRoom = room;
         $scope.isMaster = false;
         updateLocalParameters(room);
+    });
+
+    socket.on("invalidRoomPassword", function() {
+        $scope.invalidRoomPassword = true;
     });
 
     socket.on("roomLeft", function() {

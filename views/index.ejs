@@ -64,8 +64,12 @@
                   <input type="text" class="form-control" id="roomNameInput" placeholder="" ng-model="roomName"/>
                 </div>
                 <div class="form-group">
-                  <label for="roomNameInput"><%= __("Type") %></label>
-                  <select ng-options="key as type.name for (key,type) in gametypes" class="form-control" ng-model="roomType">
+                  <label for="roomPasswordInput"><%= __("Password") %></label>
+                  <input type="text" class="form-control" id="roomPasswordInput" placeholder="<%= __("(no password)") %>" ng-model="roomPassword"/>
+                </div>
+                <div class="form-group">
+                  <label for="roomTypeInput"><%= __("Type") %></label>
+                  <select id="roomTypeInput" ng-options="key as type.name for (key,type) in gametypes" class="form-control" ng-model="roomType">
                   </select>
                 </div>
                 <button type="submit" class="btn btn-primary"><%= __("Create") %></button>
@@ -130,14 +134,22 @@
           <div class="list-group">
             <a href="#" class="list-group-item" ng-repeat="room in rooms" ng-click="changeSelectedRoom(room.id)" ng-dblclick="joinRoom(room.id)">
               <div class="row">
-                <div class="col-xs-4"><b>{{ room.name }}</b></div>
+                <div class="col-xs-4">
+                  <span class="glyphicon glyphicon-lock" ng-show="room.password"></span>
+                  <b>{{ room.name }}</b>
+                </div>
                 <div class="col-xs-2"><i><%= __("By") %> {{ room.players[0].username }}</i></div>
                 <div class="col-xs-5">{{ room.gameplay.name }}</div>
                 <div class="col-xs-1"><span class="badge">{{ room.players.length }}/{{ room.size }}</span></div>
               </div>
               <div class="row" ng-show="room.id == selectedRoom">
                 <div class="col-xs-4">
-                  <div class="btn btn-primary btn-xs" ng-show="joinedRoom == null" ng-click="joinRoom(room.id)"><%= __("Join!") %></div>
+                  <form class="form-inline" ng-show="joinedRoom == null">
+                    <div class="form-group" ng-class="{'has-error': invalidRoomPassword}">
+                      <input class="form-control input-sm" type="text" ng-model="password" ng-show="room.password" placeholder="<%= __("Password") %>"/>
+                      <button class="btn btn-primary btn-xs" ng-click="joinRoom(room.id, password)"><%= __("Join!") %></button>
+                    </div>
+                  </form>
                 </div>
                 <div class="col-xs-8">
                   <i><%= __n("Player", "Players", 2) %> : <span ng-repeat="player in room.players">{{ player.username }} </span></i><br />

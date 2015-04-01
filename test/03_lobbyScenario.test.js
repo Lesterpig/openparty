@@ -160,9 +160,9 @@ describe("Lobby Scenario", function() {
       throw new Error("Should not be able to join a room!");
     });
 
-    clients[1].emit("joinRoom", roomId1);
-    clients[2].emit("joinRoom", roomId1);
-    clients[4].emit("joinRoom", roomId1);
+    clients[1].emit("joinRoom", {id: roomId1});
+    clients[2].emit("joinRoom", {id: roomId1});
+    clients[4].emit("joinRoom", {id: roomId1});
   });
 
   it("should not join multiple rooms", function() {
@@ -170,14 +170,14 @@ describe("Lobby Scenario", function() {
     clients[1].on("roomJoined", function() {
       throw new Error();
     });
-    clients[0].emit("joinRoom", roomId1);
+    clients[0].emit("joinRoom", {id: roomId1});
 
   });
 
   it("should not join a full room", function(done) {
 
     require("../lib/rooms").rooms[0].size = 3;
-    clients[3].emit("joinRoom", roomId1);
+    clients[3].emit("joinRoom", {id: roomId1});
     clients[3].on("roomJoined", function() {
       throw new Error("Should not be able to join this room (full)");
     });
@@ -332,11 +332,11 @@ describe("Lobby Scenario", function() {
     clients[1].emit("createRoom", {name: "Test Disconnect", type: "default"});
     clients[1].on("roomJoined", function(room) {
       roomId2 = room.id;
-      clients[2].emit("joinRoom", room.id);
+      clients[2].emit("joinRoom", {id: room.id});
       clients[2].on("roomJoined", function() {
         clients[2].emit("leaveRoom");
       });
-      clients[3].emit("joinRoom", room.id);
+      clients[3].emit("joinRoom", {id: room.id});
     });
 
     var nbEvents = 0;
