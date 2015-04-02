@@ -18,6 +18,13 @@
   </head>
   <body ng-controller="controller" class="ng-cloak">
 
+    <div class="container-fluid ng-cloak" style="margin-top:20px" ng-show="emergencyMessage">
+      <div class="alert alert-warning" role="alert">
+        <span class="glyphicon glyphicon-flag"></span>
+        <strong ng-bind-html="emergencyMessage"></strong>
+      </div>
+    </div>
+
     <div class="container-fluid ng-cloak" style="margin-top:20px" ng-show="status == 0">
       <div class="jumbotron">
         <h2><%= __("Welcome on %s!", __conf.name || __("OpenParty")) %></h2>

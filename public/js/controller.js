@@ -125,6 +125,10 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
 
     // DISCONNECTION MANAGEMENT
 
+    socket.on("emergencyMessage", function(msg) {
+        $scope.emergencyMessage = msg;
+    });
+
     socket.on("disconnect", function() {
         $scope.status = -1;
     });

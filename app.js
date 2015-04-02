@@ -79,4 +79,34 @@ if(isMain) {
     module.exports.start(function() {
         console.log(("-- OpenParty " + version + " is ready on port " + __conf.port).green);
     });
+
+
+    var exitHandled = false;
+    function handleExit() {
+
+        if(exitHandled)
+            return;
+        exitHandled = true;
+
+        console.log(("-- Stopping OpenParty gracefully, please wait " + __conf.shutdownDelay + " seconds...").grey);
+        for(var i = __conf.shutdownDelay; i > 0; i--) {
+            setTimeout((function(i) {
+                return function() {
+                    if(i > 1)
+                        __app.io.emit("emergencyMessage", "The server will shut down for technical reasons in " + i + " ...");
+                    else
+                        __app.io.emit("emergencyMessage", null);
+                }
+            })(i), 1000*(__conf.shutdownDelay - i));
+        }
+        setTimeout(function() {
+            process.exit(0);
+        },__conf.shutdownDelay * 1000);
+    }
+
+    if(__conf.shutdownDelay) {
+        process.on("SIGINT",  handleExit);
+        process.on("SIGTERM", handleExit);
+    }
+
 }
