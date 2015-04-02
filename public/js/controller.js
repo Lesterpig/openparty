@@ -85,6 +85,10 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
         socket.emit("joinRoom", {id: id, password: password});
     }
 
+    $scope.kickPlayer = function(username) {
+        socket.emit("kickPlayer", username);
+    }
+
     $scope.incSize = function(inc) {
         socket.emit("setRoomSize", $scope.joinedRoom.size + inc);
     }
@@ -117,7 +121,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
     $interval(function() {
         $scope.lastPing = new Date().getTime();
         socket.emit("ping");
-    }, 5000);
+    }, 10000);
 
     // DISCONNECTION MANAGEMENT
 

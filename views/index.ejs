@@ -168,7 +168,16 @@
             <div class="panel-heading"><%= __n("Player", "Players", 2) %></div>
             <div class="panel-body">
               <ul class="list-unstyled">
-                <li ng-repeat="player in joinedRoom.players"><strong>{{ player.username }}</strong></li>
+                <li ng-repeat="player in joinedRoom.players" class="row">
+                  <div class="col-xs-2">
+                    <button class="btn btn-xs btn-danger pull-right" ng-if="isMaster && player.username !== username">
+                      <span class="glyphicon glyphicon-log-out" ng-click="kickPlayer(player.username)"></span>
+                    </button>
+                  </div>
+                  <div class="col-xs-10">
+                    <strong>{{ player.username }}</strong>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
