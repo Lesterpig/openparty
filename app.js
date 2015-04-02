@@ -84,7 +84,7 @@ if(isMain) {
     var exitHandled = false;
     function handleExit() {
 
-        if(exitHandled)
+        if(exitHandled || app.io.sockets.sockets.length === 0)
             return;
         exitHandled = true;
 
@@ -93,9 +93,9 @@ if(isMain) {
             setTimeout((function(i) {
                 return function() {
                     if(i > 1)
-                        __app.io.emit("emergencyMessage", "The server will shut down for technical reasons in " + i + " ...");
+                        app.io.emit("emergencyMessage", "The server will shut down for technical reasons in " + i + " ...");
                     else
-                        __app.io.emit("emergencyMessage", null);
+                        app.io.emit("emergencyMessage", null);
                 }
             })(i), 1000*(__conf.shutdownDelay - i));
         }
