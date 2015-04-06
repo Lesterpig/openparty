@@ -177,8 +177,8 @@
               <ul class="list-unstyled">
                 <li ng-repeat="player in joinedRoom.players" class="row">
                   <div class="col-xs-2">
-                    <button class="btn btn-xs btn-danger pull-right" ng-if="isMaster && player.username !== username">
-                      <span class="glyphicon glyphicon-log-out" ng-click="kickPlayer(player.username)"></span>
+                    <button class="btn btn-xs btn-danger pull-right" ng-if="isMaster && player.username !== username" ng-click="kickPlayer(player.username)">
+                      <span class="glyphicon glyphicon-log-out"></span>
                     </button>
                   </div>
                   <div class="col-xs-10">
