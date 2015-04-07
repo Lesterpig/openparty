@@ -281,6 +281,17 @@ describe("Lobby Scenario", function() {
 
   });
 
+  it("should not receive lobby messages when room left", function(done) {
+
+    clients[2].on("chatMessage", function() {
+      throw new Error("Should not receive this message");
+    });
+    clients[0].emit("sendMessage", {channel: "preChat", message: "hello"});
+
+    setTimeout(done, 50);
+
+  });
+
   it("should leave room and change owner", function(done) {
 
     clients[0].emit("leaveRoom");

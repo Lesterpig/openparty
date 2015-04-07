@@ -404,6 +404,24 @@ describe("Game Scenario", function() {
 
   });
 
+  describe("Leave", function() {
+
+    it("should leave chat rooms", function(done) {
+
+      clients[2].on("chatMessage", function() {
+        throw new Error("Should not receive this message");
+      });
+      clients[2].on("roomLeft", function() {
+        clients[0].emit("sendMessage", {channel: "general", message: "hello"});
+      });
+
+      clients[2].emit("leaveRoom");
+
+      setTimeout(done, 50);
+    });
+
+  });
+
   describe("Disconnection", function() {
 
     it("should handle ingame disconnections", function(done) {
