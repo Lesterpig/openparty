@@ -1,7 +1,7 @@
-Open-Party
+Open-Party [![Build Status](https://travis-ci.org/Lesterpig/openparty.svg)](https://travis-ci.org/Lesterpig/openparty)
 ==========
 
-[![Code Climate](https://codeclimate.com/github/Lesterpig/openparty/badges/gpa.svg)](https://codeclimate.com/github/Lesterpig/openparty) [![Build Status](https://travis-ci.org/Lesterpig/openparty.svg)](https://travis-ci.org/Lesterpig/openparty) [![Test Coverage](https://codeclimate.com/github/Lesterpig/openparty/badges/coverage.svg)](https://codeclimate.com/github/Lesterpig/openparty)
+[![Code Climate](https://codeclimate.com/github/Lesterpig/openparty/badges/gpa.svg)](https://codeclimate.com/github/Lesterpig/openparty) [![Test Coverage](https://codeclimate.com/github/Lesterpig/openparty/badges/coverage.svg)](https://codeclimate.com/github/Lesterpig/openparty) [![Documentation Status](https://readthedocs.org/projects/openparty/badge/?version=latest)](https://readthedocs.org/projects/openparty/?badge=latest)
 
 This open-source project is a **simple** and **fast** framework for multiplayer chat games, written in clean javascript.
 It uses **node.js, socket.io & angular.js** technologies. It is able to create a webserver for that purpose.
@@ -37,39 +37,8 @@ How to install ?
 ----------------
 
 You'll have to download the source code, and then download additionnal gameplay definitions.
-Please note that Open-Party **is not tested under Windows**. We suggest you to install it under Unix distributions.
 
-### Install node.js & npm
-
-Refer to node.js documentation for more details.
-On debian :
-
-```
-sudo apt-get install nodejs nodejs-legacy git curl
-curl -L https://npmjs.com/install.sh | sh
-```
-
-### Install Open-Party
-
-```
-git clone https://github.com/Lesterpig/openparty.git
-cd openparty
-cp config/config_sample.js config/config.js
-npm install
-```
-
-### Install example gameplays
-
-```
-git clone https://github.com/Lesterpig/openparty-examples.git data
-```
-
-### Start the server!
-
-```
-cd /path/to/openparty
-npm start
-```
+Please check the [full documentation](http://openparty.readthedocs.org/en/latest/core_installation.html) !
 
 License - GPL3
 --------------

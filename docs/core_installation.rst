@@ -1,11 +1,9 @@
 Installation
 ============
 
-Note
-
 OpenParty is designed to work with **Linux**, **Mac**, and even **Windows** distributions. However, the framework provides a http server, and we strongly suggest you to host OpenParty servers in Linux distributions (Debian 7 preferred).
 
-The following instructions are designed to work for a Debian 7 installation.
+.. note:: The following instructions are designed to work for a Debian 7 installation.
 
 Softwares
 ---------
@@ -34,9 +32,7 @@ Get OpenParty
 
 You can use **Git** repository to get the latest version, or pick a stable release.
 
-Warning
-
-No stable release is available yet.
+.. note:: No stable release is available yet.
 
 .. code:: bash
 
@@ -50,6 +46,4 @@ Configuration
 
 You just have to edit the `config/config.js` file to fit your needs.
 
-Warning
-
-You'll have to restart the OpenParty server to apply the modifications.
+.. warning:: You'll have to restart the OpenParty server to apply the modifications.
