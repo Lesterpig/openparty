@@ -22,5 +22,7 @@ User documentation
 Developer documentation
 -----------------------
 
+.. note:: TODO
+
 .. toctree::
   :maxdepth: 2

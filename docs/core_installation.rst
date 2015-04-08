@@ -41,9 +41,17 @@ You can use **Git** repository to get the latest version, or pick a stable relea
   $ npm install
   $ cp config/config_sample.js config/config.js
 
+Updates and upgrades are easily resolved by git itself :
+
+.. code:: bash
+
+  $ git pull
+
 Configuration
 -------------
 
-You just have to edit the `config/config.js` file to fit your needs.
+For global parameters, you just have to edit the `config/config.js` file to fit your needs.
+
+At this point, you **don't have any gameplay definitions stored on the server**. Go to the next section to discover how to install gameplays.
 
 .. warning:: You'll have to restart the OpenParty server to apply the modifications.

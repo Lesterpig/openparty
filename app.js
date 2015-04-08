@@ -84,11 +84,13 @@ if(isMain) {
     var exitHandled = false;
     function handleExit() {
 
-        if(exitHandled || app.io.sockets.sockets.length === 0)
+        if(exitHandled || app.io.sockets.sockets.length === 0) {
+            process.exit(0);
             return;
+        }
         exitHandled = true;
 
-        console.log(("-- Stopping OpenParty gracefully, please wait " + __conf.shutdownDelay + " seconds...").grey);
+        console.error(("-- Stopping OpenParty gracefully, please wait " + __conf.shutdownDelay + " seconds...").grey);
         for(var i = __conf.shutdownDelay; i > 0; i--) {
             setTimeout((function(i) {
                 return function() {
