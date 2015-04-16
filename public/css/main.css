@@ -1,15 +1,15 @@
 #preChat, #prePlayers {
-    height: 200px;
+  height: 200px;
 }
 
 .link {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .parameters-group {
-    margin-bottom: 5px !important;
+  margin-bottom: 5px !important;
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-    display: none !important;
+  display: none !important;
 }
