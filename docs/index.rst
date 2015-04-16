@@ -22,7 +22,11 @@ User documentation
 Developer documentation
 -----------------------
 
-.. note:: TODO
+.. note:: Work In Progress
 
 .. toctree::
   :maxdepth: 2
+
+  contributing
+  definitions
+  apis
