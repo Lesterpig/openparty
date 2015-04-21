@@ -17,20 +17,20 @@ Auto-restart on fail
 
 You can use the **forever** module to automatically restart OpenParty on crash. More over, it's an easy way to restart your application after an upgrade. Forever will run OpenParty silently in the background.
 
-To install it :
+To install it:
 
 .. code:: bash
 
   $ su root
   # npm install -g forever
 
-To start your application in the background :
+To start your application in the background:
 
 .. code:: bash
 
   $ forever start --killSignal=SIGINT app.js
 
-To restart or stop it :
+To restart or stop it:
 
 .. code:: bash
 

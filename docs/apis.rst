@@ -218,7 +218,7 @@ Action
 
 Examples:
 
-.. code:: js
+.. code:: javascript
 
   var action1 = {
     isAvailable: function(player) {
@@ -264,8 +264,89 @@ Examples:
 Channel
 -------
 
+.. js:class:: Channel
+
+  A very simple object for channel management. A channel is a virtual chat room: players can read and/or speak in that channel.
+
+  By default, each player is in ``general`` channel (read and write accesses). You can remove this behavior by executing the following code:
+
+  .. code:: javascript
+
+    room.players.forEach(function(p) {
+      p.player.setChannel("general", null);
+    });
+
+.. js:attribute:: Channel.r
+
+  ``Boolean``
+
+  Determines read access
+
+.. js:attribute:: Channel.w
+
+  ``Boolean``
+
+  Determines write access
+
+.. js:attribute:: Channel.n
+
+  ``String``
+
+  The channel name. Players will see this name on their game screens.
+
+Example of read-only channel:
+
+.. code:: javascript
+
+  var channel = {r: true, w: false, n: "My Channel"};
+
 Role
 ----
 
+.. js:class:: Role
+
+  A role is a combination of some **channels** and some **actions**. Because in roleplay games, some players could share the same channels and actions...
+
+.. js:attribute:: Role.channels
+
+  ``Object[Channel]``
+
+.. js:attribute:: Role.actiond
+
+  ``Object[Action]``
+
+
+Example:
+
+.. code:: javascript
+
+  var role = {
+
+    channels: {
+      "channelA": {...},
+      "channelB": {...}
+    },
+
+    actions: {
+      "actionA": {...},
+      "actionB": {...}
+    }
+
+  }
+
 Global objects
 --------------
+
+Some usefull objects are loaded as global variables by OpenParty.
+
+.. js:function:: GET_RANDOM(from, to)
+
+  :param number from:
+  :param number to:
+  :return: A random integer between from (included) and to (included).
+
+.. js:data:: __app
+
+  The sockpress app for OpenParty. You can use it to add custom routes if required. Check the documentation_.
+
+  .. _documentation: https://github.com/Lesterpig/sockpress

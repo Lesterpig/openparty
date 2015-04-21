@@ -1,7 +1,7 @@
 Definition files
 ================
 
-Gameplay definitions are hosted under ``data/<gameplayName>/definition.js``. This file must be a **node.js module**: it means that it must return a javascript object. These two structures are valid :
+Gameplay definitions are hosted under ``data/<gameplayName>/definition.js``. This file must be a **node.js module**: it means that it must return a javascript object. These two structures are valid:
 
 .. code:: js
 
@@ -105,7 +105,7 @@ Optional keys
 
     Called when a stage ends.
 
-  Example of stages object :
+  Example of stages object 
 
   .. code:: js
 

@@ -38,7 +38,7 @@ How to install ?
 
 You'll have to download the source code, and then download additionnal gameplay definitions.
 
-Please check the [full documentation](http://openparty.readthedocs.org/en/latest/core_installation.html) !
+Please check the [full documentation](http://openparty.readthedocs.org/en/latest/) !
 
 License - GPL3
 --------------
