@@ -113,8 +113,153 @@ Room
 Player
 ------
 
+.. js:class:: Player
+
+  One player object is created and associated for each user at room startup.
+
+.. js:attribute:: Player.roles
+
+  ``Object[Role]``
+
+  Roles of this user. **You should not modify this object directly.**
+
+.. js:attribute:: Player.channels
+
+  ``Object[Channels]``
+
+  Subscribed channels for this user, overrides ``Player.roles`` ones. **You should not modify this object directly.**
+
+.. js:attribute:: Player.actions
+
+  ``Object[Actions]``
+
+  Subscribed actions for this user, overrides ``Player.roles`` ones. **You should not modify this object directly.**
+
+.. js:attribute:: Player.socket
+
+  ``Socket``
+
+.. js:attribute:: Player.room
+
+  ``Room``
+
+.. js:attribute:: Player.username
+
+  ``String``
+
+.. js:function:: Player.setRole(role, value)
+
+  Add, update or remove a role for a player. Actions and channels attached to the role are silently added for the player.
+
+  :param String role: The name of the role (should be consistent)
+  :param Role value: Role data, or ``null`` to remove the role
+
+.. js:function:: Player.setAction(name, value)
+
+  Add, update or remove an action for a player
+
+  :param String name: The name of the action (should be consistent)
+  :param Action value: Action data, or ``null`` to remove the action
+
+.. js:function:: Player.setChannel(name, value)
+
+  Add, update or remove a channel for a player
+
+  :param String role: The name of the channel (should be consistent)
+  :param Channel value: Channel data, or ``null`` to remove the player
+
+.. js:function:: Player.sendAvailableActions()
+
+  Call this function to update one's available actions (after updating some properties for instance).
+
+.. js:function:: Player.emit(event, data)
+
+  Emit an event for one player only
+
+.. js:function:: Player.message(m)
+
+  Send a chat message for one player only
+
 Action
 ------
+
+.. js:class:: Action
+
+  This object contains all mandatory data to build dynamic forms for players ingame.
+
+.. js:attribute:: Action.isAvailable
+
+  ``function(player) {}``
+
+  Must return ``true`` if the action is available for the player.
+
+.. js:attribute:: Action.type
+
+  ``String``
+
+  - ``button``
+  - ``select``
+
+.. js:attribute:: Action.options
+
+  ``Object``
+
+  Contains additionnal information for specific actions.
+
+  - ``submit: String`` (for all): the submit message printed on the button
+  - ``choices: String | Function | Array`` (for select): the list of available choices for select actions. If the value is ``players``, default choices is players' usernames.
+
+
+.. js:attribute:: Action.execute
+
+  ``function(player[, choice])``
+
+  Called during action execution by a player. You don't need to check the availability, OpenParty does it for you :)
+
+Examples:
+
+.. code:: js
+
+  var action1 = {
+    isAvailable: function(player) {
+      return true;
+    },
+    type: "button",
+    options: {
+      submit: "BOUM",
+    },
+    execute: function(player) {
+      player.room.message("EVERYTHING IS EXPLODED!");
+    }
+  };
+
+  var action2 = {
+    isAvailable: function(player) {
+      return true;
+    },
+    type: "select",
+    options: {
+      choices: ["One", "Two"],
+      submit: "Choose",
+    },
+    execute: function(player, choice) {
+      player.room.message(choice);
+    }
+  };
+
+  var action3 = {
+    isAvailable: function(player) {
+      return player.room.currentStage === "stageA";
+    },
+    type: "select",
+    options: {
+      choices: function() { return [1,2,3]; },
+      submit: "Choose",
+    },
+    execute: function(player, choice) {
+      player.room.message("general", choice);
+    }
+  };
 
 Channel
 -------
