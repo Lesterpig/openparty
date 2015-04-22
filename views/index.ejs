@@ -120,7 +120,8 @@
                     <span ng-if="parameter.help" class="glyphicon glyphicon glyphicon-info-sign link" ng-click="printHelp(parameter.help)"></span>
                   </label>
                   <div class="col-sm-5">
-                    <input type="text" class="form-control input-sm" ng-model="localParams[$index]" ng-change="changeParameter(joinedRoom.gameplay.parameters[$index].name, localParams[$index]);" ng-disabled="!isMaster"/>
+                    <input type="text" class="form-control input-sm" ng-model="localParams[$index]" ng-change="changeParameter(joinedRoom.gameplay.parameters[$index].name, localParams[$index]);" ng-disabled="!isMaster" ng-hide="parameter.isBoolean"/>
+                    <input type="checkbox" class="form-control input-sm" ng-model="localParams[$index]" ng-change="changeParameter(joinedRoom.gameplay.parameters[$index].name, localParams[$index]);" ng-disabled="!isMaster" ng-show="parameter.isBoolean"/>
                   </div>
                 </div>
               </form>

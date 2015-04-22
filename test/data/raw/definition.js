@@ -80,6 +80,12 @@ module.exports = function() {
         type: Number,
         value: 1,
         help: "-"
+      },
+      {
+        name: "Checkbox",
+        type: Boolean,
+        foo: "bar",
+        value: true
       }
     ],
 

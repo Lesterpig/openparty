@@ -17,7 +17,7 @@ You just have to pick-up these modules from package repositories. Binary files a
 
 .. _available: https://nodejs.org
 
-Here are the steps for a quick installation on a bare Debian 7 :
+Here are the steps for a quick installation on a bare Debian 7:
 
 .. code:: bash
 
@@ -41,7 +41,7 @@ You can use **Git** repository to get the latest version, or pick a stable relea
   $ npm install
   $ cp config/config_sample.js config/config.js
 
-Updates and upgrades are easily resolved by git itself :
+Updates and upgrades are easily resolved by git itself:
 
 .. code:: bash
 
