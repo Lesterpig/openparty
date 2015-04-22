@@ -82,7 +82,10 @@
                 <button type="submit" class="btn btn-primary"><%= __("Create") %></button>
                 <span style="font-size:10px">
                   <span class="glyphicon glyphicon-flash"></span> <%= __("Ping") %> : {{ping}} &nbsp;
-                  <span class="glyphicon glyphicon-user"></span> <%= __n("User", "Users", 2) %> : {{users}}
+                  <span class="glyphicon glyphicon-user"></span> 
+                  <ng-pluralize count="users.lobby" when="{'0': '<%= __("Nobody waiting") %>', 'one': '<%= __("One") %> <%= __n("person waiting", "people waiting", 1) %>', 'other': '{} <%= __n("person waiting", "people waiting", 2) %>'}"></ng-pluralize>
+                  <%= __("and") %>
+                  <ng-pluralize count="users.playing" when="{'0': '<%= __("nobody playing") %>', 'one': '<%= __("one") %> <%= __n("person playing", "people playing", 1) %>', 'other': '{} <%= __n("person playing", "people playing", 2) %>'}"></ng-pluralize>
                 </span>
               </form>
             </div>

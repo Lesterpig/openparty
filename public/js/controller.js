@@ -14,7 +14,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
 
   // Live data
 
-  $scope.users = 0;
+  $scope.users = {lobby: 0, playing: 0};
   $scope.lastPing = 0;
 
   // Game Status

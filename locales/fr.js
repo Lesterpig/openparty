@@ -51,5 +51,17 @@
   "Engine version:": "Version du moteur :",
   "You have to fill the room with several players before starting it.": "Vous devez remplir la salle avec différents joueurs avant de pouvoir la lancer.",
   "Password": "Mot de passe",
-  "(no password)": "(aucun)"
+  "(no password)": "(aucun)",
+  "Nobody waiting": "Personne attend",
+  "person waiting": {
+    "one": "personne attend",
+    "other": "personnes attendent"
+  },
+  "nobody playing": "personne ne joue",
+  "person playing": {
+    "one": "personne joue",
+    "other": "personnes jouent"
+  },
+  "One": "Une",
+  "one": "une"
 }

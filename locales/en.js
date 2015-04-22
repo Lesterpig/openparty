@@ -51,5 +51,17 @@
   "You have to fill the room with several players before starting it.": "You have to fill the room with several players before starting it.",
   "Engine version:": "Engine version:",
   "Password": "Password",
-  "(no password)": "(no password)"
+  "(no password)": "(no password)",
+  "Nobody waiting": "Nobody waiting",
+  "One": "One",
+  "person waiting": {
+    "one": "person waiting",
+    "other": "people waiting"
+  },
+  "nobody playing": "nobody playing",
+  "one": "one",
+  "person playing": {
+    "one": "person playing",
+    "other": "people playing"
+  }
 }
