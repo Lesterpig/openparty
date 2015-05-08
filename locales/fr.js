@@ -32,7 +32,7 @@
     "one": "Joueur",
     "other": "Joueurs"
   },
-  "Type a message here...": "Tapez un message içi...",
+  "Type a message here...": "Tapez un message ici...",
   "Username is too long.": "Le nom d'utilisateur est trop long.",
   "Bad Credentials": "Mauvais identifiants.",
   "Username is invalid.": "Le pseudonyme est invalide.",
