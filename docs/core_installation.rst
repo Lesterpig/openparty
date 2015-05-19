@@ -30,9 +30,9 @@ Here are the steps for a quick installation on a bare Debian 7:
 Get OpenParty
 -------------
 
-You can use **Git** repository to get the latest version, or pick a stable release.
+You can use **Git** repository to get the latest version, or pick a `stable release`_.
 
-.. note:: No stable release is available yet.
+.. _`stable release`: https://github.com/Lesterpig/openparty/releases
 
 .. code:: bash
 
