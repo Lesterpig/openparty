@@ -154,6 +154,19 @@ describe("Game Scenario", function() {
 
     });
 
+    it("should emit a private message for player 1", function(done) {
+
+      clients[0].on("chatMessage", error);
+      clients[1].on("chatMessage", function(data) {
+        equals("GAMEMASTER", data.sender);
+        done();
+      });
+
+      var room = require("../lib/rooms").rooms[0];
+      room.broadcast("player-p1", "chatMessage", {sender: "GAMEMASTER"});
+
+    });
+
     it("should emit and receive chat messages in roles channels", function(done) {
       var i = 0;
       var handleOk = function(data) {

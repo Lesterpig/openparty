@@ -276,6 +276,14 @@ Channel
       p.player.setChannel("general", null);
     });
 
+  Each player is also in a private channel (read-only). The name of the channel is
+
+  .. code::
+
+    player-<username>
+
+  with <username> replaced by the effective username of the user. This feature is just an helper for gamemaster features or private messages (for instance).
+
 .. js:attribute:: Channel.r
 
   ``Boolean``
