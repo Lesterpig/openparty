@@ -302,11 +302,17 @@ Channel
 
   The channel name. Players will see this name on their game screens.
 
+.. js:attribute:: Channel.p
+
+  ``Number``
+
+  The channel priority. Highest priority element is in the top in channels list, and selected by default. It is an optional parameter.
+
 Example of read-only channel:
 
 .. code:: javascript
 
-  var channel = {r: true, w: false, n: "My Channel"};
+  var channel = {r: true, w: false, n: "My Channel", p: 10};
 
 Role
 ----

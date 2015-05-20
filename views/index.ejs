@@ -251,7 +251,7 @@
             <input type="text" class="form-control" placeholder="<%= __("Type a message here...") %>" ng-model="chatMessage" ng-keydown="keyChat($event)"/>
           </div>
           <div class="col-md-3 col-lg-2">
-            <select ng-model="selectedChannel" class="form-control" ng-options="k as v.n for (k, v) in channels"></select>
+            <select ng-model="selectedChannel" class="form-control" ng-options="v.id as v.n for v in channels" ng-change="manualChannelChange = true"></select>
           </div>
         </div>
       </div>
