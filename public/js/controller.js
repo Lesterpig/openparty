@@ -32,6 +32,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
   $scope.preChat = "";
   $scope.gameChat = "";
   $scope.channels = {};
+  $scope.manualChannelChange = false;
 
   // Timer
 
@@ -244,16 +245,27 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
 
   socket.on("setAllowedChannels", function(data) {
 
-    $scope.channels = data;
+    var channelsArray = [];
+    for(var i in data) {
+      data[i].id = i;
+      channelsArray.push(data[i]);
+    }
+    channelsArray.sort(function(a, b) {
+      if(!a.p)
+        a.p = 0;
+      if(!b.p)
+        b.p = 0;
+      return b.p - a.p; // reversed by priority
+    });
 
-    if(!$scope.selectedChannel && data.general)
-      $scope.selectedChannel = "general";
-    else if(!data[$scope.selectedChannel] && !data.general) {
-      for(var i in data) {
-        $scope.selectedChannel = i;
-        return;
-      }
-      $scope.selectedChannel = null;
+    $scope.channels = channelsArray;
+
+    if(!data[$scope.selectedChannel] || !$scope.manualChannelChange) {
+      $scope.manualChannelChange = false;
+      if(channelsArray.length > 0)
+        $scope.selectedChannel = channelsArray[0].id; // the highest priority is selected by default
+      else
+        $scope.selectedChannel = null; // no channel available
     }
 
   });
