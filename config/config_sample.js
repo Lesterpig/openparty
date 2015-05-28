@@ -11,7 +11,7 @@ module.exports = {
   password: null,             // change it to set a server password for user access
   shutdownDelay: 0,           // delay before server kill on SIGTERM/SIGINT - useful in production
 
-  locales: ["en","fr"],
+  locales: ["en","fr", "es"],
   defaultLocale: "en"
 
 }
