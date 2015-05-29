@@ -24,7 +24,11 @@
         </p>
         <% } %>
         <p><small>
-          <span class="glyphicon glyphicon-tag"></span> <%= __("Engine version:") %> <%= version %><br />
+          <span class="glyphicon glyphicon-tag"></span> <%= __("Engine version:") %> <%= version %>
+          <% if(repo.url) { %>
+            (<%= repo.branch %>@<a href='<%= repo.url %>'><%= repo.abbreviatedSha %></a><% if(repo.tag) { %>, tag <strong><%= repo.tag %></strong><% } %>)
+          <% } %>
+          <br />
           <span class="glyphicon glyphicon-star"></span> <%= __("Supported languages:") %> <%= locales %><br />
           <span class="glyphicon glyphicon-file"></span> <%= __("Gamemodes:") %>
             <% for(var i in gamemodes) { %>
