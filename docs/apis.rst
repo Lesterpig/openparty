@@ -102,6 +102,10 @@ Room
 
   :param number duration: duration in seconds
 
+.. js:function:: Room.getRemainingTime()
+
+  :return: Milliseconds before next stage. Can be "Infinity"
+
 .. js:function:: Room.resolveUsername(username)
 
    Get player object from username

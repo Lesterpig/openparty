@@ -388,7 +388,10 @@ describe("Game Scenario", function() {
 
     it("should start a new infinite stage", function(done) {
       var room = require("../lib/rooms").rooms[0];
-      clients[0].on("clearTimer", done);
+      clients[0].on("clearTimer", function() {
+        equals(Infinity, room.getRemainingTime());
+        done();
+      });
       room.nextStage("infinite");
     });
 
@@ -396,6 +399,8 @@ describe("Game Scenario", function() {
       var room = require("../lib/rooms").rooms[0];
       clients[0].on("setTimer", function(duration) {
         equals(1, duration);
+        var r = room.getRemainingTime();
+        assert(500 < r && r <= 1000);
         done();
       });
       room.setStageDuration(1);
