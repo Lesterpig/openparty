@@ -48,6 +48,23 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
 
   $scope.playersInfos = {};
 
+  // Header
+
+  var baseTitle = document.title;
+
+  $scope.updateTitle = function() {
+    var output = baseTitle;
+    if($scope.joinedRoom) {
+      if($scope.joinedRoom.started) {
+        output = "❱ " + output;
+      }
+      else {
+        output = "[" + $scope.joinedRoom.players.length + "/" + $scope.joinedRoom.size +"] " + output;
+      }
+    }
+    document.title = output;
+  };
+
   $scope.printHelp = function(help) {
     $scope.roomHelpMessage = help;
   };
@@ -173,6 +190,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
   /** GLOBAL LOBBY FUNCTIONS **/
   socket.on("roomCreated", function(room) {
     $scope.rooms.push(room);
+    $scope.updateTitle();
   });
 
   socket.on('roomRemoved', function(id) {
@@ -200,6 +218,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
       if($scope.joinedRoom.id === room.id) {
         $scope.joinedRoom = room;
         updateLocalParameters(room);
+        $scope.updateTitle();
       }
     }
   });
@@ -213,6 +232,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
     $scope.joinedRoom = room;
     $scope.isMaster = false;
     updateLocalParameters(room);
+    $scope.updateTitle();
   });
 
   socket.on("invalidRoomPassword", function() {
@@ -226,6 +246,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
     $scope.gameChat   = "";
     $scope.gameInfo = "";
     $scope.status     = 1;
+    $scope.updateTitle();
   });
 
   /** CHAT **/
@@ -285,6 +306,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
   socket.on("gameStarted", function(room) {
     $scope.status = 2;
     $scope.playersInfos = {};
+    $scope.updateTitle();
   });
 
   socket.on("setGameInfo", function(data) {
