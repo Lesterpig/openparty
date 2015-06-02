@@ -131,12 +131,17 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
   });
 
   socket.on("disconnect", function() {
-    $scope.status = -1;
+    if(!$scope.disableWarning)
+      $scope.status = -1;
   });
 
   socket.on("reconnect", function() {
     window.location = "/";
   });
+
+  window.onbeforeunload = function() {
+    $scope.disableWarning = true;
+  };
 
   // DOWN
 
