@@ -236,9 +236,9 @@
 
         <div class="panel panel-default">
           <div class="panel-body">
-            <ul class="list-unstyled">
-              <li ng-repeat="player in joinedRoom.players" ng-bind-html="getPlayerInfos(player)"></li>
-            </ul>
+            <div class="container-fluid">
+              <div class="row" ng-repeat="player in joinedRoom.players" ng-bind-html="getPlayerInfos(player)"></div>
+            </div>
           </div>
         </div>
 
