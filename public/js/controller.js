@@ -47,6 +47,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
   // Local data
 
   $scope.playersInfos = {};
+  $scope.username = window.location.hash ? window.location.hash.substr(1) : '';
 
   // Header
 
@@ -84,41 +85,41 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
   // UP
   $scope.loginSubmit = function() {
     socket.emit('login', {username: $scope.username, password: $scope.password});
-  }
+  };
 
   $scope.createRoom = function() {
     socket.emit('createRoom', {name: $scope.roomName, type: $scope.roomType, password: $scope.roomPassword});
-  }
+  };
 
   $scope.leaveRoom = function() {
     socket.emit('leaveRoom');
-  }
+  };
 
   $scope.startRoom = function() {
     socket.emit('startRoom');
-  }
+  };
 
   $scope.joinRoom = function(id, password) {
     $scope.invalidRoomPassword = false;
     socket.emit('joinRoom', {id: id, password: password});
-  }
+  };
 
   $scope.kickPlayer = function(username) {
     socket.emit('kickPlayer', username);
-  }
+  };
 
   $scope.incSize = function(inc) {
     socket.emit('setRoomSize', $scope.joinedRoom.size + inc);
-  }
+  };
 
   $scope.changeParameter = function(parameter, value) {
     socket.emit('setRoomParameter', {parameter: parameter, value: value});
-  }
+  };
 
   $scope.keyChat = function(e, preChat) {
     if(e.keyCode === 13)
       $scope.sendMessage(preChat);
-  }
+  };
 
   $scope.sendMessage = function(preChat) {
     if(preChat) {
@@ -126,7 +127,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
     } else {
       socket.emit('sendMessage', { channel: $scope.selectedChannel, message: $scope.chatMessage });
     }
-  }
+  };
 
   $scope.executeAction = function(action) {
     var data = {action: action};
@@ -134,7 +135,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
       data.value = $scope.actionsValues[action];
     }
     socket.emit('executeAction', data);
-  }
+  };
 
   $interval(function() {
     $scope.lastPing = new Date().getTime();
@@ -153,7 +154,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
   });
 
   socket.on('reconnect', function() {
-    window.location = '/';
+    window.location.reload();
   });
 
   window.onbeforeunload = function() {
@@ -176,6 +177,9 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
       $scope.loginErrorMessage = o.err;
       return;
     }
+
+    // Write username in URL for further use
+    window.location = window.location.origin + '/#' + $scope.username;
 
     $scope.gametypes = o.gametypes;
     for(i in o.gametypes) {
