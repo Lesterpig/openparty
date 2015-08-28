@@ -12,5 +12,5 @@ before_script:
   - "cp config/config_sample.js config/config.js"
   - npm install -g codeclimate-test-reporter
 after_script:
-  - ./node_modules/.bin/mocha -R mocha-lcov-reporter -r blanket > lcov.info
-  - cat lcov.info | codeclimate
+  - ./node_modules/.bin/mocha -R mocha-lcov-reporter > lcov.info
+  - cat lcov.info | codeclimate-test-reporter
