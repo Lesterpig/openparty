@@ -378,8 +378,15 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     } else {
       $scope.audio[data.id].play();
     }
-    $scope.audio[data.id].muting  = ($scope.mute === 'on');
-    $scope.audio[data.id].pausing = false;
+    var sound = $scope.audio[data.id];
+
+    if(data.loop !== undefined)
+      sound.loop = data.loop;
+    if(data.volume !== undefined && $scope.mute !== 'on')
+      sound.setVolume(data.volume);
+
+    sound.muting.setMuting($scope.mute === 'on');
+    sound.pausing = false; // Not sure we need this, but couple of strange bugs without...
   });
 
   socket.on('stopSound', function(data) {

@@ -380,6 +380,17 @@ Sound
 
   Is it an absolute path, or not ? Defaults to false.
 
+.. js:attribute:: Sound.loop
+
+  ``Boolean``
+
+  Define if the sound should be restarted at the end or not.
+
+.. js:attribute:: Sound.volume
+
+  ``Number``
+
+  A number between 0 and 1 for setting sound volume.
 
 Global objects
 --------------
