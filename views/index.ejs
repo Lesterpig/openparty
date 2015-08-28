@@ -209,6 +209,10 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">
+              <button class="btn btn-default btn-xs" style="float: right" ng-click="toggleMute()">
+                <span class="glyphicon glyphicon-volume-up"  ng-show="mute !== 'on'"></span>
+                <span class="glyphicon glyphicon-volume-off" ng-show="mute === 'on'"></span>
+              </button>
               <button class="btn btn-link btn-xs" ng-click="leaveRoom()">
                 <span class="glyphicon glyphicon-log-out"></span>
               </button>

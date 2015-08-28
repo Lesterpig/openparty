@@ -50,6 +50,11 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   $scope.playersInfos = {};
   $scope.username     = window.location.hash ? window.location.hash.substr(1) : '';
   $scope.audio        = {};
+  $scope.mute         = localStorage['mute'];
+
+  if($scope.mute === 'on') {
+    ngAudio.mute();
+  }
 
   // Header
 
@@ -405,6 +410,16 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     $scope.remainingTime.min = min;
     $scope.remainingTime.sec = sec;
 
+  };
+
+  $scope.toggleMute = function() {
+    $scope.mute = ($scope.mute === 'on' ? 'off' : 'on');
+    localStorage['mute'] = $scope.mute;
+    if($scope.mute) {
+      ngAudio.mute();
+    } else {
+      ngAudio.unmute();
+    }
   };
 
   /** PRIVATE **/
