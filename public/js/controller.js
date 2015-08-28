@@ -373,12 +373,13 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     if(!data.id){
       data = {id: data};
     }
-    if(!$scope.audio[data.id]){
+    if(!$scope.audio[data.id]) {
       $scope.audio[data.id] = ngAudio.play(data.path);
     } else {
-      console.log('play ' + data);
       $scope.audio[data.id].play();
     }
+    $scope.audio[data.id].muting  = ($scope.mute === 'on');
+    $scope.audio[data.id].pausing = false;
   });
 
   socket.on('stopSound', function(data) {
@@ -415,10 +416,8 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   $scope.toggleMute = function() {
     $scope.mute = ($scope.mute === 'on' ? 'off' : 'on');
     localStorage['mute'] = $scope.mute;
-    if($scope.mute) {
-      ngAudio.mute();
-    } else {
-      ngAudio.unmute();
+    for(var sound in $scope.audio) {
+      $scope.audio[sound].muting = ($scope.mute === 'on');
     }
   };
 
