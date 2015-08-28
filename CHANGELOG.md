@@ -1,6 +1,17 @@
 Changelog
 =========
 
+v0.2.0
+------
+xxxx-xx-xx
+
+- Save username in URL
+  + Useful when refreshing the page
+  + Useful when using bookmarks
+- Add sound support (#23)
+  + New events to handle sounds from modules
+  + Mute/Unmute button available ingame. Preferences are saved in browser.
+
 v0.1.3
 ------
 2015-08-26

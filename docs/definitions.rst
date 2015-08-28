@@ -170,3 +170,9 @@ Optional keys
 .. js:data:: 'onDisconnect'
 
   `function (room, player) {}`
+
+.. js:data:: 'sounds'
+
+  `Array[Sound]`
+
+  An array of Sound objects to be preloaded automatically at start. Please provide only tiny sounds to avoid large bandwidth usage.

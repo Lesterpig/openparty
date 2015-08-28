@@ -68,6 +68,9 @@ Room
   - ``chatMessage({sender: String, message: String})``: print a new message in game log
   - ``clearChat()``: clear the game log
   - ``setGameInfo(String)``: change the content of the box in the left-top on the game-screen
+  - ``preloadSound(Sound)``: preload a sound in player browsers to avoid further latency
+  - ``playSound(Sound)``
+  - ``stopSound(Sound)``
 
 .. js:function:: Room.playerInfo([channel], player, value)
 
@@ -351,6 +354,32 @@ Example:
     }
 
   }
+
+Sound
+-----
+
+.. js:class:: Sound
+
+  A sound is a minimal object containing several information for browsers.
+
+.. js:attribute:: Sound.id
+
+  ``String``
+
+  A unique identifier for the sound.
+
+.. js:attribute:: Sound.path
+
+  ``String``
+
+  Relative, or absolute path of the sound. You should store your sounds in **/public** directory.
+
+.. js:attribute:: Sound.distant
+
+  ``Boolean``
+
+  Is it an absolute path, or not ? Defaults to false.
+
 
 Global objects
 --------------
