@@ -35,7 +35,7 @@ describe("Static pages", function() {
   it("should return a dumb file", function(done) {
 
     request(__app)
-      .get('/dumb.txt')
+      .get('/raw/dumb.txt')
       .expect(200, done);
 
   });

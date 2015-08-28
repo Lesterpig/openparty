@@ -1,53 +1,55 @@
 angular.module('openparty', [
   'btford.socket-io',
   'ngSanitize',
-  'luegg.directives' //for scrollGlue directive
+  'luegg.directives', //for scrollGlue directive
+  'ngAudio'
 ]).
 factory('socket', function (socketFactory) {
   return socketFactory();
 }).
-controller('controller', ['$scope', 'socket', '$interval', function ($scope, socket, $interval) {
+controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function ($scope, socket, $interval, ngAudio) {
 
   // Server data (served on login)
 
-  $scope.gametypes        = {};
+  $scope.gametypes = {};
 
   // Live data
 
-  $scope.users = {lobby: 0, playing: 0};
+  $scope.users    = {lobby: 0, playing: 0};
   $scope.lastPing = 0;
 
   // Game Status
 
-  $scope.status       = 0;
-  $scope.rooms        = [];
-  $scope.joinedRoom   = null;
-  $scope.selectedRoom = null;
-  $scope.localParams  = [];
-  $scope.isMaster     = false;
+  $scope.status           = 0;
+  $scope.rooms            = [];
+  $scope.joinedRoom       = null;
+  $scope.selectedRoom     = null;
+  $scope.localParams      = [];
+  $scope.isMaster         = false;
   $scope.showMasterParams = true;
 
   // Game Chats
 
-  $scope.preChat = '';
-  $scope.gameChat = '';
-  $scope.channels = {};
+  $scope.preChat             = '';
+  $scope.gameChat            = '';
+  $scope.channels            = {};
   $scope.manualChannelChange = false;
 
   // Timer
 
-  $scope.timer = null;
+  $scope.timer         = null;
   $scope.remainingTime = {raw: 0, min: '--', sec: '--'};
 
   // Actions
 
-  $scope.actions = {};
+  $scope.actions       = {};
   $scope.actionsValues = {};
 
   // Local data
 
   $scope.playersInfos = {};
-  $scope.username = window.location.hash ? window.location.hash.substr(1) : '';
+  $scope.username     = window.location.hash ? window.location.hash.substr(1) : '';
+  $scope.audio        = {};
 
   // Header
 
@@ -192,6 +194,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
 
 
   /** GLOBAL LOBBY FUNCTIONS **/
+
   socket.on('roomCreated', function(room) {
     $scope.rooms.push(room);
     $scope.updateTitle();
@@ -232,11 +235,19 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
   });
 
   /** PERSONNAL LOBBY FUNCTIONS **/
+
   socket.on('roomJoined', function(room) {
     $scope.joinedRoom = room;
     $scope.isMaster = false;
     updateLocalParameters(room);
     $scope.updateTitle();
+
+    // Preload default sounds
+    if(room.gameplay.sounds){
+      room.gameplay.sounds.forEach(function(s){
+        $scope.audio[s.id] = ngAudio.load(s.path);
+      });
+    }
   });
 
   socket.on('invalidRoomPassword', function() {
@@ -254,6 +265,7 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
   });
 
   /** CHAT **/
+
   socket.on('messageSent', function() {
     $scope.chatMessage = '';
   });
@@ -342,6 +354,35 @@ controller('controller', ['$scope', 'socket', '$interval', function ($scope, soc
 
   socket.on('playerInfo', function(data) {
     $scope.playersInfos[data.username] = data.value;
+  });
+
+  /** Audio management */
+
+  socket.on('preloadSound', function(data) {
+    if(!$scope.audio[data.id]){
+      $scope.audio[data.id] = ngAudio.load(data.path);
+    }
+  });
+
+  socket.on('playSound', function(data) {
+    if(!data.id){
+      data = {id: data};
+    }
+    if(!$scope.audio[data.id]){
+      $scope.audio[data.id] = ngAudio.play(data.path);
+    } else {
+      console.log('play ' + data);
+      $scope.audio[data.id].play();
+    }
+  });
+
+  socket.on('stopSound', function(data) {
+    if(!data.id){
+      data = {id: data};
+    }
+    if($scope.audio[data.id]){
+      $scope.audio[data.id].stop();
+    }
   });
 
   $scope.writeTimer = function() {

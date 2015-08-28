@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/main.css">
     <% __customCss.forEach(function(f) { %>
-    <link rel="stylesheet" href="css/<%= f %>">
+    <link rel="stylesheet" href="<%= f %>">
     <% }) %>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
 
@@ -263,6 +263,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/socket.min.js"></script>
     <script src="js/glue.js"></script>
+    <script src="js/audio.js"></script>
 
     <script src="js/controller.js"></script>
   </body>

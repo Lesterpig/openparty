@@ -45,12 +45,15 @@ module.exports = {
       global.__gametypes       = gametypes;
       global.__staticGametypes = {};
       global.__customCss       = [];
-      for(type in gametypes) {
+      for(var type in gametypes) {
         __staticGametypes[type] = new gametypes[type]();
 
         // Has CSS extensions ?
         var css = __staticGametypes[type].css;
         if(css) {
+          for(var i = 0; i < css.length; i++){
+            css[i] = '/' + type + '/css/' + css[i];
+          }
           __customCss = __customCss.concat(css);
         }
 
