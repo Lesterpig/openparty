@@ -2,6 +2,10 @@
   height: 200px;
 }
 
+.resizable {
+  resize: vertical;
+}
+
 .link {
   cursor: pointer;
 }

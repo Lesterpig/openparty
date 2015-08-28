@@ -11,6 +11,7 @@ xxxx-xx-xx
 - Add sound support (#23)
   + New events to handle sounds from modules
   + Mute/Unmute button available ingame. Preferences are saved in browser.
+- Pre-game chat is now resizable
 
 v0.1.3
 ------
