@@ -39,8 +39,8 @@ describe("Lobby Scenario", function() {
 
   it("should ping", function(done) {
 
-    clients[0].on("pong", done);
-    clients[0].emit("ping");
+    clients[0].on("o-pong", done);
+    clients[0].emit("o-ping");
 
   });
 

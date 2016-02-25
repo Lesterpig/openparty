@@ -64,12 +64,14 @@ module.exports = {
 
       this.server = app.listen(__conf.port, __conf.bind, callback);
       userCountInterval = setInterval(function() {
-
-        var nbConnected = app.io.sockets.sockets.length;
-        var nbPlaying   = app.io.sockets.sockets.filter(function(s) {
-          return s.player;
-        }).length;
-
+        var nbConnected = 0;
+        var nbPlaying = 0;
+        for(var socket in app.io.sockets.sockets) {
+          nbConnected++;
+          if(app.io.sockets.sockets[socket].player) {
+            nbPlaying++;
+          }
+        }
         app.io.emit('userCount', {lobby: nbConnected - nbPlaying, playing: nbPlaying});
       }, 5000);
 

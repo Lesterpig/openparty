@@ -146,7 +146,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
 
   $interval(function() {
     $scope.lastPing = new Date().getTime();
-    socket.emit('ping');
+    socket.emit('o-ping');
   }, 10000);
 
   // DISCONNECTION MANAGEMENT
@@ -170,7 +170,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
 
   // DOWN
 
-  socket.on('pong', function() {
+  socket.on('o-pong', function() {
     $scope.ping = new Date().getTime() - $scope.lastPing;
   });
 
