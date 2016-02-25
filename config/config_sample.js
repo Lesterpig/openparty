@@ -12,6 +12,10 @@ module.exports = {
   shutdownDelay: 0,           // delay before server kill on SIGTERM/SIGINT - useful in production
 
   locales: ["en","fr", "es"],
-  defaultLocale: "en"
+  defaultLocale: "en",
 
-}
+  name: "",                   // custom server name
+  welcomeMsg: "",             // shown on "home" page
+  motd: "",                   // shown on "lobby" page
+  description: "",            // shown on "about" page
+};
