@@ -218,8 +218,8 @@
                 <span class="glyphicon glyphicon-volume-up"  ng-show="mute !== 'on'"></span>
                 <span class="glyphicon glyphicon-volume-off" ng-show="mute === 'on'"></span>
               </button>
-              <button class="btn btn-link btn-xs" ng-click="leaveRoom()">
-                <span class="glyphicon glyphicon-log-out"></span>
+              <button class="btn btn-xs btn-danger" ng-click="leaveRoom()">
+                <%= __("Leave") %>
               </button>
               {{ joinedRoom.name }}
             </h3>
