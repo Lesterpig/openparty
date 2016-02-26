@@ -39,8 +39,8 @@ describe("Lobby Scenario", function() {
 
   it("should ping", function(done) {
 
-    clients[0].on("pong", done);
-    clients[0].emit("ping");
+    clients[0].on("o-pong", done);
+    clients[0].emit("o-ping");
 
   });
 
@@ -152,8 +152,9 @@ describe("Lobby Scenario", function() {
     var nbJoin = 0;
     var handleJoin = function(room) {
       equals(roomId1, room.id);
+      equals("/raw/sound.mp3", room.gameplay.sounds[0].path);
       if(++nbJoin === 2) done();
-    }
+    };
     clients[1].on("roomJoined", handleJoin);
     clients[2].on("roomJoined", handleJoin);
     clients[4].on("roomJoined", function() {

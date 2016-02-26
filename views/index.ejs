@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/main.css">
     <% __customCss.forEach(function(f) { %>
-    <link rel="stylesheet" href="css/<%= f %>">
+    <link rel="stylesheet" href="<%= f %>">
     <% }) %>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
 
@@ -28,7 +28,7 @@
     <div class="container-fluid ng-cloak" style="margin-top:20px" ng-show="status == 0">
       <div class="jumbotron">
         <h2><%= __("Welcome on %s!", __conf.name || __("OpenParty")) %></h2>
-        <p><%= __("Please provide some credentials to access the lobby.") %></p>
+        <p><%- __conf.welcomeMsg || __("Please provide some credentials to access the lobby.") %></p>
         <div class="alert alert-danger" role="alert" ng-show="loginErrorMessage">
           <strong>{{ loginErrorMessage }}</strong>
         </div>
@@ -56,9 +56,14 @@
     </div>
 
     <div class="container-fluid ng-cloak" ng-show="status == 1">
-      <div class="page-header">
-        <h1><%= __("Lobby") %> <small><%= __("Welcome") %> {{ username }}</small></h1>
+      <h1><%= __("Lobby") %> <small><%= __("Welcome") %> {{ username }}</small></h1>
+      <% if(__conf.motd) { %>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%- __conf.motd %>
+        </div>
       </div>
+      <% } %>
 
       <div class="row">
         <div class="col-md-4">
@@ -194,7 +199,7 @@
           </div>
         </div>
         <div class="col-sm-7 col-md-9">
-          <pre id="preChat" ng-bind-html="preChat" scroll-glue></pre>
+          <pre id="preChat" ng-bind-html="preChat" scroll-glue class="resizable"></pre>
           <input type="text" class="form-control" placeholder="<%= __("Type a message here...") %>" ng-model="chatMessage" ng-keydown="keyChat($event, true)"/>
         </div>
       </div>
@@ -209,8 +214,12 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">
-              <button class="btn btn-link btn-xs" ng-click="leaveRoom()">
-                <span class="glyphicon glyphicon-log-out"></span>
+              <button class="btn btn-default btn-xs" style="float: right" ng-click="toggleMute()">
+                <span class="glyphicon glyphicon-volume-up"  ng-show="mute !== 'on'"></span>
+                <span class="glyphicon glyphicon-volume-off" ng-show="mute === 'on'"></span>
+              </button>
+              <button class="btn btn-xs btn-danger" ng-click="leaveRoom()">
+                <%= __("Leave") %>
               </button>
               {{ joinedRoom.name }}
             </h3>
@@ -263,6 +272,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/socket.min.js"></script>
     <script src="js/glue.js"></script>
+    <script src="js/audio.js"></script>
 
     <script src="js/controller.js"></script>
   </body>

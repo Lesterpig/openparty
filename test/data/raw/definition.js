@@ -74,6 +74,10 @@ module.exports = function() {
     maxPlayers: 6,
     firstStage: "stageA",
 
+    sounds: [
+      {id: "sound", path: "sound.mp3"}
+    ],
+
     parameters: [
       {
         name: "Number of things",
