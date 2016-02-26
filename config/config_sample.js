@@ -11,6 +11,9 @@ module.exports = {
   password: null,             // change it to set a server password for user access
   shutdownDelay: 0,           // delay before server kill on SIGTERM/SIGINT - useful in production
 
+  maxRooms: 10,               // maximum number of rooms allowed
+  maxPlayers: 100,            // maximum number of connected players allowed
+
   locales: ["en","fr", "es"],
   defaultLocale: "en",
 

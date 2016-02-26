@@ -63,5 +63,6 @@
   "person playing": {
     "one": "person playing",
     "other": "people playing"
-  }
+  },
+  "This server is full, sorry. Please try again later!": "This server is full, sorry. Please try again later!"
 }

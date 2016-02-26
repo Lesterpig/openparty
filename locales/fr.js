@@ -63,5 +63,6 @@
     "other": "personnes jouent"
   },
   "One": "Une",
-  "one": "une"
+  "one": "une",
+  "This server is full, sorry. Please try again later!": "Désolé, ce serveur est complet. Merci de réessayer plus tard !"
 }
