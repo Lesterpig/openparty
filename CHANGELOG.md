@@ -3,15 +3,19 @@ Changelog
 
 v0.2.0
 ------
-xxxx-xx-xx
+2016-02-26
 
-- Save username in URL
+- Add username save in URL
   + Useful when refreshing the page
   + Useful when using bookmarks
 - Add sound support (#23)
-  + New events to handle sounds from modules
-  + Mute/Unmute button available ingame. Preferences are saved in browser.
-- Pre-game chat is now resizable
+  + Add new events to handle sounds from modules
+  + Add mute/Unmute button available ingame. Preferences are saved in browser.
+- Add resize option in Pre-game Chat (#29)
+- Add some quotas for maximum number of players and room (#26)
+- Add custom welcome message and message of the day (motd)
+- Fix visibility of "Leave Room" button ingame
+- Ensure compatibility with latest version of node and socket.io
 
 v0.1.3
 ------
