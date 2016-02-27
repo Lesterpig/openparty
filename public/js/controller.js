@@ -244,6 +244,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   socket.on('roomJoined', function(room) {
     $scope.joinedRoom = room;
     $scope.isMaster = false;
+    $scope.preChat = "";
     updateLocalParameters(room);
     $scope.updateTitle();
 
@@ -282,7 +283,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     else
       data.sender = '';
 
-    if(!$scope.joinedRoom.started)
+    if(!$scope.joinedRoom || !$scope.joinedRoom.started && !data.lobby)
       $scope.preChat += getDate() + ' ' + data.sender + data.message + '\n';
 
     else {
@@ -370,9 +371,14 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   });
 
   socket.on('playSound', function(data) {
+    if($scope.mute === "on"){
+      return;
+    }
+
     if(!data.id){
       data = {id: data};
     }
+
     if(!$scope.audio[data.id]) {
       $scope.audio[data.id] = ngAudio.play(data.path);
     } else {
@@ -380,13 +386,11 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     }
     var sound = $scope.audio[data.id];
 
+    sound.pausing = false;
     if(data.loop !== undefined)
       sound.loop = data.loop;
-    if(data.volume !== undefined && $scope.mute !== 'on')
+    if(data.volume !== undefined)
       sound.setVolume(data.volume);
-
-    sound.muting.setMuting($scope.mute === 'on');
-    sound.pausing = false; // Not sure we need this, but couple of strange bugs without...
   });
 
   socket.on('stopSound', function(data) {
@@ -423,9 +427,6 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   $scope.toggleMute = function() {
     $scope.mute = ($scope.mute === 'on' ? 'off' : 'on');
     localStorage['mute'] = $scope.mute;
-    for(var sound in $scope.audio) {
-      $scope.audio[sound].muting = ($scope.mute === 'on');
-    }
   };
 
   /** PRIVATE **/

@@ -92,6 +92,23 @@ describe("Lobby Scenario", function() {
     clients[4].emit("login", {username: " teSt_0  ", password: __conf.password});
   });
 
+  it("should enable clients to post message in lobby chat", function(done) {
+
+    var nbMessages = 0;
+    var handleMessage = function(e) {
+      equals("lobbyMsg", e.message);
+      equals("test_0", e.sender);
+      equals(true, e.lobby);
+      if(++nbMessages >= 4) done();
+    }
+
+    clients[0].on("chatMessage", handleMessage);
+    clients[1].on("chatMessage", handleMessage);
+    clients[2].on("chatMessage", handleMessage);
+    clients[3].on("chatMessage", handleMessage);
+    clients[0].emit("sendMessage", {message: "lobbyMsg"});
+  });
+
   it("should not create room if invalid gameplay", function() {
 
     clients[1].on("roomCreated", function() {

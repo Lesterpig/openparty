@@ -148,7 +148,7 @@
           </div>
 
           <div class="list-group">
-            <a href="#" class="list-group-item" ng-repeat="room in rooms" ng-click="changeSelectedRoom(room.id)" ng-dblclick="joinRoom(room.id)">
+            <a class="list-group-item" ng-repeat="room in rooms" ng-click="changeSelectedRoom(room.id)" ng-dblclick="joinRoom(room.id)">
               <div class="row">
                 <div class="col-xs-4">
                   <span class="glyphicon glyphicon-lock" ng-show="room.password"></span>
@@ -191,7 +191,7 @@
                     </button>
                   </div>
                   <div class="col-xs-10">
-                    <strong>{{ player.username }}</strong>
+                    <strong ng-bind-html="player.username"></strong>
                   </div>
                 </li>
               </ul>
@@ -204,7 +204,12 @@
         </div>
       </div>
 
-
+      <div class="row" ng-show="joinedRoom == null">
+        <div class="col-md-4">
+          <pre id="preChat" ng-bind-html="preChat" scroll-glue class="resizable"></pre>
+          <input type="text" class="form-control" placeholder="<%= __("Type a message here...") %>" ng-model="chatMessage" ng-keydown="keyChat($event, true)"/>
+        </div>
+      </div>
     </div>
 
     <div class="container-fluid ng-cloak" style="margin-top:20px; height: 90vh;" ng-show="status == 2">
