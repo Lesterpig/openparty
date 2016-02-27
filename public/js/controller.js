@@ -4,6 +4,12 @@ angular.module('openparty', [
   'luegg.directives', //for scrollGlue directive
   'ngAudio'
 ]).
+filter('parseUrlFilter', function () { // the "linky" filter is not suitable due to the html sanitization
+  var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/gi;
+  return function (text, target) {
+    return text.replace(urlPattern, '<a target="' + target + '" href="$&">$&</a>')
+  };
+}).
 factory('socket', function (socketFactory) {
   return socketFactory();
 }).
