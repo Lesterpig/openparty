@@ -292,9 +292,8 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     if(!$scope.joinedRoom || !$scope.joinedRoom.started && !data.lobby)
       $scope.preChat += getDate() + ' ' + data.sender + data.message + '\n';
 
-    else {
+    else if(!data.lobby)
       $scope.gameChat += data.sender + data.message + '<br />';
-    }
   });
 
   socket.on('setAllowedChannels', function(data) {
