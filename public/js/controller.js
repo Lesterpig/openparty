@@ -7,7 +7,7 @@ angular.module('openparty', [
 filter('parseUrlFilter', function () { // the "linky" filter is not suitable due to the html sanitization
   var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/gi;
   return function (text, target) {
-    return text.replace(urlPattern, '<a target="' + target + '" href="$&">$&</a>')
+    return text.replace(urlPattern, '<a target="' + target + '" href="$&">$&</a>');
   };
 }).
 factory('socket', function (socketFactory) {
@@ -57,6 +57,8 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   $scope.username     = window.location.hash ? window.location.hash.substr(1) : '';
   $scope.audio        = {};
   $scope.mute         = localStorage['mute'];
+  var availableThemes = ['default', 'darkly'];
+  $scope.theme        = +localStorage['theme'] || 0;
 
   if($scope.mute === 'on') {
     ngAudio.mute();
@@ -94,6 +96,15 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     $scope.selectedRoom = id;
     $scope.invalidRoomPassword = false;
   };
+
+  $scope.changeTheme = function(n) {
+    if(n === undefined) {
+      localStorage['theme'] = $scope.theme = ($scope.theme + 1) % availableThemes.length;
+    }
+    // Doing a raw update to optimize refresh
+    document.getElementById('stylesheet').href = 'css/bootstrap.' + availableThemes[$scope.theme] + '.min.css';
+  };
+  $scope.changeTheme($scope.theme); // Initial call
 
   // UP
   $scope.loginSubmit = function() {
@@ -195,7 +206,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     window.location = window.location.origin + '/#' + $scope.username;
 
     $scope.gametypes = o.gametypes;
-    for(i in o.gametypes) {
+    for(var i in o.gametypes) {
       $scope.roomType = i; break;
     }
     $scope.status = 1;
@@ -250,7 +261,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   socket.on('roomJoined', function(room) {
     $scope.joinedRoom = room;
     $scope.isMaster = false;
-    $scope.preChat = "";
+    $scope.preChat = '';
     updateLocalParameters(room);
     $scope.updateTitle();
 
@@ -355,7 +366,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
 
   socket.on('setAvailableActions', function(data) {
     $scope.actions = data;
-    for(action in $scope.actions) {
+    for(var action in $scope.actions) {
       if($scope.actions[action].type === 'select') {
         if($scope.actions[action].options.safeChoices.length >= 1)
           $scope.actionsValues[action] = $scope.actions[action].options.safeChoices[0];
@@ -376,7 +387,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   });
 
   socket.on('playSound', function(data) {
-    if($scope.mute === "on"){
+    if($scope.mute === 'on'){
       return;
     }
 

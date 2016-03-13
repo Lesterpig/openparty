@@ -1,6 +1,7 @@
 #preChat, #prePlayers {
   height: 200px;
   white-space: pre-wrap;
+  word-break: normal;
 }
 
 .resizable {

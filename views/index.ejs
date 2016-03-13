@@ -7,8 +7,7 @@
 
     <title><%= __conf.name || __("OpenParty") %></title>
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/bootstrap.default.min.css" id="stylesheet">
     <link rel="stylesheet" href="css/main.css">
     <% __customCss.forEach(function(f) { %>
     <link rel="stylesheet" href="<%= f %>">
@@ -49,7 +48,7 @@
 
     <div class="container-fluid ng-cloak" style="margin-top:20px" ng-show="status == -1">
       <div class="alert alert-danger" role="alert">
-        <h4><strong><%= __("Something went wrong...") %></strong></h4>
+        <h4><strong><span class="glyphicon glyphicon-remove"></span> <%= __("Something went wrong...") %></strong></h4>
         <p><%= __("Connection with server has been interrupted. Don't panic ! We (probably) are trying to solve the problem.") %></p>
         <p><%= __("Please check that you are correctly linked to internet and that the server is running.") %></p>
       </div>
@@ -68,7 +67,10 @@
       <div class="row">
         <div class="col-md-4">
           <div class="panel panel-default" ng-show="joinedRoom == null">
-            <div class="panel-heading"><%= __("Open new room") %></div>
+            <div class="panel-heading">
+              <%= __("Open new room") %>
+              <%- include("parts/theme_button") %>
+            </div>
             <div class="panel-body">
               <form role="form" ng-submit="createRoom()">
                 <div class="form-group">
@@ -102,6 +104,7 @@
               <button class="btn btn-xs btn-link" ng-click="showMasterParams = !showMasterParams;">
                 <%= __("Hide") %>/<%= __("Show") %>
               </button>
+              <%- include("parts/theme_button") %>
             </div>
             <div class="panel-body" ng-show="showMasterParams">
 
@@ -223,6 +226,7 @@
                 <span class="glyphicon glyphicon-volume-up"  ng-show="mute !== 'on'"></span>
                 <span class="glyphicon glyphicon-volume-off" ng-show="mute === 'on'"></span>
               </button>
+              <%- include("parts/theme_button") %>
               <button class="btn btn-xs btn-danger" ng-click="leaveRoom()">
                 <%= __("Leave") %>
               </button>
