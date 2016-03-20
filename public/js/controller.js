@@ -506,11 +506,19 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', 'crypto', 
     $scope.overlay = remove ? 'rmFriend' : 'addFriend';
   };
 
+  $scope.printIdentity = function() {
+    $scope.exportData = crypto.exportData();
+    console.log('EXPORT', $scope.exportData);
+    $scope.overlay = 'registrationInfo';
+  };
+
   $scope.setFriend = function(remove) {
     fingerprints[$scope.friend.username] = remove ? '' : $scope.friend.fingerprint;
     localStorage['fingerprints'] = JSON.stringify(fingerprints);
     $scope.overlay = false;
   };
+
+  $scope.import = crypto.importData;
 
   /** PRIVATE **/
 

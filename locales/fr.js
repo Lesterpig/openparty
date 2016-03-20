@@ -78,5 +78,9 @@
   "Please check the player's identity yourself before performing this action.": "Veuillez vérifier l'identité du joueur par vous-même avant de confirmer.",
   "Confirm": "Confirmer",
   "This player is correctly identified because you are trusting him, and its authentication is correct.": "Ce player est correctement identifié car vous lui faites confiance, et son authentification est correcte.",
-  "Click the following button to remove the identification of this player.": "Cliquez sur le bouton suivant pour supprimer l'identification de ce joueur."
+  "Click the following button to remove the identification of this player.": "Cliquez sur le bouton suivant pour supprimer l'identification de ce joueur.",
+  "Import identity": "Importer une identité",
+  "Please paste the backup chain here to import your identification": "Veuillez coller le texte de sauvegarde pour importer votre identification",
+  "Import": "Importer",
+  "Save the following text IN A SECURE PLACE to use your identity on other computers:": "Sauvegardez le texte suivant DANS UN LIEU SÉCURISÉ afin d'utiliser votre identité sur d'autres ordinateurs"
 }

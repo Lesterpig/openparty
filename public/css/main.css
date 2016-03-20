@@ -1,4 +1,4 @@
-#preChat, #prePlayers {
+.preChat {
   height: 200px;
   white-space: pre-wrap;
   word-break: normal;

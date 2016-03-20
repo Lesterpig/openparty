@@ -50,6 +50,28 @@ angular.module('openparty').factory('crypto', ['$q', function($q) {
      });
     },
 
+    importData: function(data) {
+      try {
+        data = JSON.parse(atob(data));
+      } catch(e) { return false; }
+      localStorage['PGP_Secret']  = data.secret;
+      localStorage['PGP_Public']  = data.public;
+      localStorage['PGP_Username'] = data.username;
+      localStorage['fingerprints'] = data.fingerprints;
+      window.location.reload();
+      return true;
+    },
+
+    exportData: function() {
+      var data = {
+        secret       : localStorage['PGP_Secret'],
+        public       : localStorage['PGP_Public'],
+        username     : localStorage['PGP_Username'],
+        fingerprints : localStorage['fingerprints'],
+      };
+      return btoa(JSON.stringify(data));
+    },
+
   };
 
 }]);

@@ -62,10 +62,13 @@
           <button type="button" class="btn btn-link" ng-click="register()" ng-disabled="registering"  ng-show="!registered && !authUsername">
             <span class="glyphicon glyphicon-check"></span> <%= __("Register") %>
           </button>
+          <button type="button" class="btn btn-link" ng-click="overlay='import'" ng-show="!registered && !authUsername && !registering">
+            <span class="glyphicon glyphicon-import"></span> <%= __("Import identity") %>
+          </button>
           <a class="btn btn-link" href="/" ng-show="registered">
             <%= __("Registration done! Reload the page by clicking this link to proceed.") %>
           </a>
-          <button type="button" class="btn btn-link" ng-show="authUsername" title="<%= __("Logged as") %> {{authUsername}}" ng-click="overlay = 'registrationInfo'">
+          <button type="button" class="btn btn-link" ng-show="authUsername" title="<%= __("Logged as") %> {{authUsername}}" ng-click="printIdentity()">
             <span class="glyphicon glyphicon-ok"></span>
           </button>
         </small>
@@ -225,14 +228,14 @@
           </div>
         </div>
         <div class="col-sm-7 col-md-9">
-          <pre id="preChat" ng-bind-html="preChat | parseUrlFilter:'_blank'" scroll-glue class="resizable"></pre>
+          <pre ng-bind-html="preChat | parseUrlFilter:'_blank'" scroll-glue class="resizable preChat"></pre>
           <input type="text" class="form-control" placeholder="<%= __("Type a message here...") %>" ng-model="chatMessage" ng-keydown="keyChat($event, true)"/>
         </div>
       </div>
 
       <div class="row" ng-show="joinedRoom == null">
         <div class="col-md-4">
-          <pre id="preChat" ng-bind-html="preChat | parseUrlFilter:'_blank'" scroll-glue class="resizable"></pre>
+          <pre ng-bind-html="preChat | parseUrlFilter:'_blank'" scroll-glue class="resizable preChat"></pre>
           <input type="text" class="form-control" placeholder="<%= __("Type a message here...") %>" ng-model="chatMessage" ng-keydown="keyChat($event, true)"/>
         </div>
       </div>
@@ -312,6 +315,8 @@
 
             <div class="panel-body" ng-show="overlay === 'registrationInfo'">
               <p><%= __("You are currently authenticated. Others can check safely your identity.") %></p>
+              <p><%= __("Save the following text IN A SECURE PLACE to use your identity on other computers:") %></p>
+              <pre class="preChat">{{ exportData }}</pre>
               <p><strong><%= __("Beware, removing your identification is definitive, and will take effect from the next connection.") %></strong></p>
               <button type="button" class="btn btn-danger" ng-click="unregister()"><%= __("Remove identification") %></button>
             </div>
@@ -327,6 +332,12 @@
               <p><%= __("This player is correctly identified because you are trusting him, and its authentication is correct.") %></p>
               <p><%= __("Click the following button to remove the identification of this player.") %></p>
               <button type="button" class="btn btn-danger" ng-click="setFriend(true)"><%= __("Remove identification") %></button>
+            </div>
+
+            <div class="panel-body" ng-show="overlay === 'import'">
+              <p><%= __("Please paste the backup chain here to import your identification") %></p>
+              <textarea class="form-control" rows="3" ng-model="importData"></textarea>
+              <button type="button" class="btn btn-primary" ng-click="import(importData);"><%= __("Import") %></button>
             </div>
           </div>
         </div>

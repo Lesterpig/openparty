@@ -82,5 +82,9 @@
   "You are currently authenticated. Others can check safely your identity.": "You are currently authenticated. Others can check safely your identity.",
   "Bad authentication": "Bad authentication",
   "Error": "Error",
-  "Mismatch": "Mismatch"
+  "Mismatch": "Mismatch",
+  "Import identity": "Import identity",
+  "Save the following text IN A SECURE PLACE to use your identity on other computers:": "Save the following text IN A SECURE PLACE to use your identity on other computers:",
+  "Please paste the backup chain here to import your identification": "Please paste the backup chain here to import your identification",
+  "Import": "Import"
 }
