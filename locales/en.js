@@ -64,5 +64,23 @@
     "one": "person playing",
     "other": "people playing"
   },
-  "This server is full, sorry. Please try again later!": "This server is full, sorry. Please try again later!"
+  "This server is full, sorry. Please try again later!": "This server is full, sorry. Please try again later!",
+  "Register": "Register",
+  "Registration done! Reload the page by clicking this link to proceed.": "Registration done! Reload the page by clicking this link to proceed.",
+  "Logged as": "Logged as",
+  "Important note": "Important note",
+  "You are going to add to add the following player in your trust list:": "You are going to add to add the following player in your trust list:",
+  "Please check the player's identity yourself before performing this action.": "Please check the player's identity yourself before performing this action.",
+  "Confirm": "Confirm",
+  "Doing this, you will be able to check its identity in future rooms.": "Doing this, you will be able to check its identity in future rooms.",
+  "This player is correctly identified because you are trusting him, and the authentication is correct.": "This player is correctly identified because you are trusting him, and the authentication is correct.",
+  "Click the following button to remove the identification of this player.": "Click the following button to remove the identification of this player.",
+  "Remove identification": "Remove identification",
+  "This player is correctly identified because you are trusting him, and its authentication is correct.": "This player is correctly identified because you are trusting him, and its authentication is correct.",
+  "You are currently authentified. Others can check safely your identity.": "You are currently authentified. Others can check safely your identity.",
+  "Beware, removing your identification is definitive, and will take effect from the next connection.": "Beware, removing your identification is definitive, and will take effect from the next connection.",
+  "You are currently authenticated. Others can check safely your identity.": "You are currently authenticated. Others can check safely your identity.",
+  "Bad authentication": "Bad authentication",
+  "Error": "Error",
+  "Mismatch": "Mismatch"
 }

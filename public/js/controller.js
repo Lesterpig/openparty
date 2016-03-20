@@ -13,7 +13,7 @@ filter('parseUrlFilter', function () { // the "linky" filter is not suitable due
 factory('socket', function (socketFactory) {
   return socketFactory();
 }).
-controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function ($scope, socket, $interval, ngAudio) {
+controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', 'crypto', function ($scope, socket, $interval, ngAudio, crypto) {
 
   // Server data (served on login)
 
@@ -54,11 +54,13 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   // Local data
 
   $scope.playersInfos = {};
-  $scope.username     = window.location.hash ? window.location.hash.substr(1) : '';
+  $scope.authUsername = localStorage['PGP_Username'];
+  $scope.username     = $scope.authUsername || (window.location.hash ? window.location.hash.substr(1) : '');
   $scope.audio        = {};
   $scope.mute         = localStorage['mute'];
   var availableThemes = ['default', 'darkly'];
   $scope.theme        = +localStorage['theme'] || 0;
+  $scope.overlay      = '';
 
   if($scope.mute === 'on') {
     ngAudio.mute();
@@ -108,7 +110,23 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
 
   // UP
   $scope.loginSubmit = function() {
-    socket.emit('login', {username: $scope.username, password: $scope.password});
+    var req = {username: $scope.username, password: $scope.password};
+
+    if($scope.authUsername !== $scope.username) {
+      $scope.authUsername = '';
+    }
+
+    if($scope.authUsername) {
+      crypto.getChallengeResponse($scope.challenge).then(function(data) {
+        req.key = data.key;
+        req.message = data.message;
+        socket.emit('login', req);
+      }, function() {
+        socket.emit('login', req);
+      });
+    } else {
+      socket.emit('login', req);
+    }
   };
 
   $scope.createRoom = function() {
@@ -161,6 +179,20 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     socket.emit('executeAction', data);
   };
 
+  $scope.register = function() {
+   $scope.registering = true;
+   crypto.generateKey($scope.username).then(function() {
+    $scope.registered = true;
+   });
+  };
+
+  $scope.unregister = function() {
+    if(confirm('Confirm?')) {
+      delete localStorage['PGP_Username'];
+      $scope.overlay = $scope.authUsername = '';
+    }
+  };
+
   $interval(function() {
     $scope.lastPing = new Date().getTime();
     socket.emit('o-ping');
@@ -193,6 +225,10 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
 
   socket.on('userCount', function(c) {
     $scope.users = c;
+  });
+
+  socket.on('challenge', function(c) {
+    $scope.challenge = c;
   });
 
   socket.on('loginResult', function(o) {
@@ -443,6 +479,37 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   $scope.toggleMute = function() {
     $scope.mute = ($scope.mute === 'on' ? 'off' : 'on');
     localStorage['mute'] = $scope.mute;
+  };
+
+  /** Authentication management **/
+
+  var fingerprints = localStorage['fingerprints'];
+  fingerprints = fingerprints ? JSON.parse(fingerprints) : {};
+
+  // TODO This function is to be called many times. We should find a way to cache result in $scope or somewhere else...
+  $scope.checkAuth = function(player) {
+    if(player.username === $scope.username || !player.authentication)
+      return 'none';
+
+    var saved = fingerprints[player.authentication.username];
+    if(!saved)
+      return 'unknown';
+
+    if(player.authentication.fingerprint === saved)
+      return 'ok';
+
+    return 'ko';
+  };
+
+  $scope.askFriend = function(player, remove) {
+    $scope.friend  = player.authentication;
+    $scope.overlay = remove ? 'rmFriend' : 'addFriend';
+  };
+
+  $scope.setFriend = function(remove) {
+    fingerprints[$scope.friend.username] = remove ? '' : $scope.friend.fingerprint;
+    localStorage['fingerprints'] = JSON.stringify(fingerprints);
+    $scope.overlay = false;
   };
 
   /** PRIVATE **/

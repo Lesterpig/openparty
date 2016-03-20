@@ -1,4 +1,4 @@
-var socket = require('socket.io-client');
+var socket = require("socket.io-client");
 
 module.exports = {
 
@@ -7,6 +7,10 @@ module.exports = {
 
     client.on("connect", function() {
       callback(client);
+    });
+
+    client.on("challenge", function(c) {
+      client.challenge = c;
     });
 
   },

@@ -64,5 +64,19 @@
   },
   "One": "Une",
   "one": "une",
-  "This server is full, sorry. Please try again later!": "Désolé, ce serveur est complet. Merci de réessayer plus tard !"
+  "This server is full, sorry. Please try again later!": "Désolé, ce serveur est complet. Merci de réessayer plus tard !",
+  "Register": "Enregistrement",
+  "Registration done! Reload the page by clicking this link to proceed.": "Enregistrement effectué ! Rechargez la page en cliquant sur ce lien pour continuer.",
+  "Logged as": "Connecté en tant que",
+  "Mismatch": "Erreur",
+  "Important note": "Information importante",
+  "You are currently authenticated. Others can check safely your identity.": "Vous êtes actuellement authentifié. Les autres joueurs peuvent vérifier votre identité en toute sécurité.",
+  "Beware, removing your identification is definitive, and will take effect from the next connection.": "Attention, supprimer votre identification est définitif, et prendra effet lors de la prochaine connexion.",
+  "Remove identification": "Supprimer l'identification",
+  "You are going to add to add the following player in your trust list:": "Vous êtes sur le point d'ajouter le joueur suivant à votre liste de confiance :",
+  "Doing this, you will be able to check its identity in future rooms.": "En effectuant cette action, vous pourrez vérifier son identité dans de futures salles de jeu.",
+  "Please check the player's identity yourself before performing this action.": "Veuillez vérifier l'identité du joueur par vous-même avant de confirmer.",
+  "Confirm": "Confirmer",
+  "This player is correctly identified because you are trusting him, and its authentication is correct.": "Ce player est correctement identifié car vous lui faites confiance, et son authentification est correcte.",
+  "Click the following button to remove the identification of this player.": "Cliquez sur le bouton suivant pour supprimer l'identification de ce joueur."
 }

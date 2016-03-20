@@ -55,7 +55,21 @@
     </div>
 
     <div class="container-fluid ng-cloak" ng-show="status == 1">
-      <h1><%= __("Lobby") %> <small><%= __("Welcome") %> {{ username }}</small></h1>
+      <h1>
+        <%= __("Lobby") %>
+        <small>
+          <%= __("Welcome") %> {{ username }}
+          <button type="button" class="btn btn-link" ng-click="register()" ng-disabled="registering"  ng-show="!registered && !authUsername">
+            <span class="glyphicon glyphicon-check"></span> <%= __("Register") %>
+          </button>
+          <a class="btn btn-link" href="/" ng-show="registered">
+            <%= __("Registration done! Reload the page by clicking this link to proceed.") %>
+          </a>
+          <button type="button" class="btn btn-link" ng-show="authUsername" title="<%= __("Logged as") %> {{authUsername}}" ng-click="overlay = 'registrationInfo'">
+            <span class="glyphicon glyphicon-ok"></span>
+          </button>
+        </small>
+      </h1>
       <% if(__conf.motd) { %>
       <div class="panel panel-default">
         <div class="panel-body">
@@ -194,7 +208,16 @@
                     </button>
                   </div>
                   <div class="col-xs-10">
-                    <strong ng-bind-html="player.username"></strong>
+                    <strong ng-bind-html="player.username"></strong>&nbsp;
+                    <button class="btn btn-xs btn-danger" ng-if="checkAuth(player) === 'ko'" ng-click="askFriend(player)">
+                      <%= __("Mismatch") %>
+                    </button>
+                    <button class="btn btn-xs btn-link" ng-if="checkAuth(player) === 'ok'" ng-click="askFriend(player, true)">
+                      <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                    <button class="btn btn-xs btn-link" ng-if="checkAuth(player) === 'unknown'" ng-click="askFriend(player)">
+                      <span class="glyphicon glyphicon-question-sign"></span>
+                    </button>
                   </div>
                 </li>
               </ul>
@@ -276,13 +299,49 @@
 
     </div>
 
+    <div id="overlay" ng-show="overlay">
+      <div class="container-fluid">
+        <div class="col-md-6 col-md-offset-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <%= __("Important note") %>
+              <button type="button" class="btn btn-danger pull-right btn-xs" ng-click="overlay=false">
+                <span class="glyphicon glyphicon-remove"></span>
+              </button>
+            </div>
+
+            <div class="panel-body" ng-show="overlay === 'registrationInfo'">
+              <p><%= __("You are currently authenticated. Others can check safely your identity.") %></p>
+              <p><strong><%= __("Beware, removing your identification is definitive, and will take effect from the next connection.") %></strong></p>
+              <button type="button" class="btn btn-danger" ng-click="unregister()"><%= __("Remove identification") %></button>
+            </div>
+
+            <div class="panel-body" ng-show="overlay === 'addFriend'">
+              <p><%= __("You are going to add to add the following player in your trust list:") %> <strong>{{ friend.username }}</strong></p>
+              <p><%= __("Doing this, you will be able to check its identity in future rooms.") %></p>
+              <p><%= __("Please check the player's identity yourself before performing this action.") %></p>
+              <button type="button" class="btn btn-primary" ng-click="setFriend(false)"><%= __("Confirm") %></button>
+            </div>
+
+            <div class="panel-body" ng-show="overlay === 'rmFriend'">
+              <p><%= __("This player is correctly identified because you are trusting him, and its authentication is correct.") %></p>
+              <p><%= __("Click the following button to remove the identification of this player.") %></p>
+              <button type="button" class="btn btn-danger" ng-click="setFriend(true)"><%= __("Remove identification") %></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="js/angular.min.js"></script>
     <script src="js/angular-sanitize.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/socket.min.js"></script>
     <script src="js/glue.js"></script>
     <script src="js/audio.js"></script>
+    <script src="js/openpgp.min.js"></script>
 
     <script src="js/controller.js"></script>
+    <script src="js/crypto.js"></script>
   </body>
 </html>

@@ -26,22 +26,26 @@ describe("Lobby Scenario", function() {
     clientManager.clearEventsMultiple(clients);
   });
 
-  it("should open connections for 5 clients", function(done) {
+  it("should open connections for 10 clients", function(done) {
     var saveClient = function(c) {
       clients.push(c);
-      if(clients.length === 5) done();
+      if(clients.length === 10) done();
     }
 
-    for(var i = 0; i < 5; i++) {
+    for(var i = 0; i < 10; i++) {
       clientManager.createClient(saveClient);
     }
   });
 
   it("should ping", function(done) {
-
     clients[0].on("o-pong", done);
     clients[0].emit("o-ping");
+  });
 
+  it("should have received challenges", function() {
+    for(var i = 0; i < 10; i++) {
+      equals(true, clients[i].challenge.length > 16);
+    }
   });
 
   it("should refuse wrong username", function(done) {
@@ -69,9 +73,9 @@ describe("Lobby Scenario", function() {
       if(!e.err) nbLogged++;
       else nbErr++;
 
-      if(nbLogged + nbErr >= 10) {
+      if(nbLogged + nbErr >= 7) {
         equals(4, nbLogged);
-        equals(6, nbErr);
+        equals(3, nbErr);
         done();
       }
     };
@@ -87,9 +91,23 @@ describe("Lobby Scenario", function() {
     clients[4].emit("login", {username: "a"});
     clients[4].emit("login", {username: "a", password: "wrongPassword"});
     clients[4].emit("login", {password: "wrongPassword"});
-    clients[4].emit("login", {username: "test_0", password: __conf.password});
-    clients[4].emit("login", {username: "tEsT_0", password: __conf.password});
-    clients[4].emit("login", {username: " teSt_0  ", password: __conf.password});
+  });
+
+  it("should handle same username issues", function(done) {
+
+    clients[6].on("loginResult", function(e) {
+      equals(null, e.err);
+      equals("tESt_0³", e.username);
+      done();
+    });
+
+    clients[5].on("loginResult", function(e) {
+      equals(null, e.err);
+      equals("test_0²", e.username);
+      clients[6].emit("login", {username: " tESt_0", password: __conf.password});
+    });
+
+    clients[5].emit("login", {username: "test_0", password: __conf.password});
   });
 
   it("should enable clients to post message in lobby chat", function(done) {
