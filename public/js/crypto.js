@@ -1,6 +1,6 @@
 angular.module('openparty').factory('crypto', ['$q', function($q) {
 
-  //openpgp.initWorker({ path:'js/openpgp.worker.min.js' });
+  openpgp.initWorker({ path:'js/openpgp.worker.min.js' });
 
   // Return instance
   return {
@@ -11,6 +11,7 @@ angular.module('openparty').factory('crypto', ['$q', function($q) {
         numBits: 1024,
         unlocked: true,
       };
+
       return openpgp.generateKey(options).then(function(key) {
         localStorage['PGP_Username'] = username;
         localStorage['PGP_Secret']   = key.privateKeyArmored;

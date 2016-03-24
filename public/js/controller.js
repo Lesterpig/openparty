@@ -508,7 +508,6 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', 'crypto', 
 
   $scope.printIdentity = function() {
     $scope.exportData = crypto.exportData();
-    console.log('EXPORT', $scope.exportData);
     $scope.overlay = 'registrationInfo';
   };
 
