@@ -155,7 +155,6 @@
               </form>
 
               <br />
-              <button class="btn btn-danger" ng-click="leaveRoom()"><%= __("Leave") %></button>
               <button class="btn btn-success" ng-if="isMaster" ng-click="startRoom()" ng-disabled="joinedRoom.players.length < joinedRoom.size"><b><%= __("Start!") %></b></button>
               <span class="glyphicon glyphicon glyphicon-info-sign link" ng-if="isMaster" ng-click='printHelp("<%= __("You have to fill the room with several players before starting it.") %>")'></span>
             </div>
@@ -201,7 +200,12 @@
       <div class="row" ng-show="joinedRoom != null">
         <div class="col-sm-5 col-md-3">
           <div class="panel panel-default">
-            <div class="panel-heading"><%= __n("Player", "Players", 2) %></div>
+            <div class="panel-heading">
+              <%= __n("Player", "Players", 2) %>
+              <button class="btn btn-xs btn-danger" ng-click="leaveRoom()" style="float: right">
+                <%= __("Leave") %>
+              </button>
+            </div>
             <div class="panel-body">
               <ul class="list-unstyled">
                 <li ng-repeat="player in joinedRoom.players" class="row">
