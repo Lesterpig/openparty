@@ -32,7 +32,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', 'crypto', 
   $scope.selectedRoom     = null;
   $scope.localParams      = [];
   $scope.isMaster         = false;
-  $scope.showMasterParams = true;
+  $scope.showMasterParams = false;
 
   // Game Chats
 
