@@ -71,6 +71,9 @@
           <button type="button" class="btn btn-link" ng-show="authUsername" title="<%= __("Logged as") %> {{authUsername}}" ng-click="printIdentity()">
             <span class="glyphicon glyphicon-ok"></span>
           </button>
+          <button type="button" class="btn btn-xs btn-danger" ng-click="logout()" style="float: right">
+            <span class="glyphicon glyphicon-log-out"></span>
+          </button>
         </small>
       </h1>
       <% if(__conf.motd) { %>

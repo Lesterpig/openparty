@@ -82,5 +82,6 @@
   "Import identity": "Importer une identité",
   "Please paste the backup chain here to import your identification": "Veuillez coller le texte de sauvegarde pour importer votre identification",
   "Import": "Importer",
-  "Save the following text IN A SECURE PLACE to use your identity on other computers:": "Sauvegardez le texte suivant DANS UN LIEU SÉCURISÉ afin d'utiliser votre identité sur d'autres ordinateurs"
+  "Save the following text IN A SECURE PLACE to use your identity on other computers:": "Sauvegardez le texte suivant DANS UN LIEU SÉCURISÉ afin d'utiliser votre identité sur d'autres ordinateurs",
+  "You have been reconnected after a network issue. Sorry, some information may not have been retrieved.": "Vous avez été reconnecté après un problème de connectivité. Oups, certaines informations n'ont peut-être pas pu être récupérées."
 }

@@ -131,6 +131,10 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', 'crypto', 
     }
   };
 
+  $scope.logout = function() {
+    socket.emit('logout');
+  };
+
   $scope.createRoom = function() {
     socket.emit('createRoom', {name: $scope.roomName, type: $scope.roomType, password: $scope.roomPassword});
   };
@@ -231,6 +235,11 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', 'crypto', 
 
   socket.on('challenge', function(c) {
     $scope.challenge = c;
+  });
+
+  socket.on('reconnectInvitation', function(username) {
+    $scope.username = username;
+    $scope.loginSubmit();
   });
 
   socket.on('loginResult', function(o) {

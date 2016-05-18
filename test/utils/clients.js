@@ -1,16 +1,28 @@
 var socket = require("socket.io-client");
+var request = require("request");
+
+var url = "http://localhost:"+__conf.port;
 
 module.exports = {
 
   createClient: function(callback) {
-    var client = socket("http://localhost:"+__conf.port, {forceNew: true});
 
-    client.on("connect", function() {
-      callback(client);
-    });
+    var jar = request.jar();
+    request({uri: url, jar: jar}, function(err, res, body) {
+      var client = socket(url, {
+        forceNew: true,
+        extraHeaders: {
+          Cookie: jar.getCookieString(url)
+        }
+      });
 
-    client.on("challenge", function(c) {
-      client.challenge = c;
+      client.on("connect", function() {
+        callback(client);
+      });
+
+      client.on("challenge", function(c) {
+        client.challenge = c;
+      });
     });
 
   },

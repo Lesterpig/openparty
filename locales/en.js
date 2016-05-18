@@ -86,5 +86,6 @@
   "Import identity": "Import identity",
   "Save the following text IN A SECURE PLACE to use your identity on other computers:": "Save the following text IN A SECURE PLACE to use your identity on other computers:",
   "Please paste the backup chain here to import your identification": "Please paste the backup chain here to import your identification",
-  "Import": "Import"
+  "Import": "Import",
+  "You have been reconnected after a network issue. Sorry, some information may not have been retrieved.": "You have been reconnected after a network issue. Sorry, some information may not have been retrieved."
 }
