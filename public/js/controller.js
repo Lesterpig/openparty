@@ -278,12 +278,12 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   socket.on('chatMessage', function(data) {
 
     if(data.sender)
-      data.sender = '<strong>' + data.sender + '</strong> : ';
+      data.sender = getDate() + ' <strong>' + data.sender + '</strong> : ';
     else
       data.sender = '';
 
     if(!$scope.joinedRoom.started)
-      $scope.preChat += getDate() + ' ' + data.sender + data.message + '\n';
+      $scope.preChat += data.sender + data.message + '\n';
 
     else {
       $scope.gameChat += data.sender + data.message + '<br />';
@@ -445,11 +445,13 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     var date = new Date();
     var h    = date.getHours();
     var i    = date.getMinutes();
+    var j    = date.getSeconds();
 
     if(h < 10) h = '0' + h;
     if(i < 10) i = '0' + i;
+    if(j < 10) j = '0' + j;
 
-    return '['+h+':'+i+']';
+    return '['+h+':'+i+':'+j+']';
   }
 
 
