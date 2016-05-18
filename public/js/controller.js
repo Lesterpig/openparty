@@ -1,8 +1,8 @@
 angular.module('openparty', [
-  'btford.socket-io',
-  'ngSanitize',
-  'luegg.directives', //for scrollGlue directive
-  'ngAudio'
+    'btford.socket-io',
+    'ngSanitize',
+    'luegg.directives', //for scrollGlue directive
+    'ngAudio'
 ]).
 filter('parseUrlFilter', function () { // the "linky" filter is not suitable due to the html sanitization
   var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/gi;
@@ -44,7 +44,9 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', 'crypto', 
   // Timer
 
   $scope.timer         = null;
-  $scope.remainingTime = {raw: 0, min: '--', sec: '--'};
+  $scope.timerStart    = null;
+  $scope.timerDuration = null;
+  $scope.remainingTime = {min: '--', sec: '--'};
 
   // Actions
 
@@ -389,7 +391,8 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', 'crypto', 
 
   socket.on('setTimer', function(data) {
     $interval.cancel($scope.timer);
-    $scope.remainingTime.raw = +data;
+    $scope.timerDuration = +data;
+    $scope.timerStart = new Date().getTime();
     $scope.timer = $interval($scope.writeTimer, 1000);
     $scope.writeTimer();
   });
@@ -456,7 +459,8 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', 'crypto', 
 
   $scope.writeTimer = function() {
 
-    var time = $scope.remainingTime.raw--;
+    var now = new Date().getTime();
+    var time = Math.trunc($scope.timerDuration - (now - $scope.timerStart) / 1000);
 
     if(time <= 0) {
       $scope.remainingTime.min = '--';
