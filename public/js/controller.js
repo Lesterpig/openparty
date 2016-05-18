@@ -393,7 +393,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', 'crypto', 
     $interval.cancel($scope.timer);
     $scope.timerDuration = +data;
     $scope.timerStart = new Date().getTime();
-    $scope.timer = $interval($scope.writeTimer, 1000);
+    $scope.timer = $interval($scope.writeTimer, 200);
     $scope.writeTimer();
   });
 
@@ -460,7 +460,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', 'crypto', 
   $scope.writeTimer = function() {
 
     var now = new Date().getTime();
-    var time = Math.trunc($scope.timerDuration - (now - $scope.timerStart) / 1000);
+    var time = Math.round($scope.timerDuration - (now - $scope.timerStart) / 1000);
 
     if(time <= 0) {
       $scope.remainingTime.min = '--';
