@@ -9,7 +9,7 @@ It uses **node.js, socket.io & angular.js** technologies. It is able to create a
 Project Status
 --------------
 
-Under heavy development! Check issues for more information.
+Under slow development. Check issues for more information.
 
 Features
 --------
@@ -43,7 +43,7 @@ Please check the [full documentation](http://openparty.readthedocs.org/en/latest
 License - GPL3
 --------------
 
-    Copyright (C) 2015 Loïck BONNIOT
+    Copyright (C) 2015-2017 Loïck BONNIOT
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

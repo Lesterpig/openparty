@@ -16,6 +16,10 @@ module.exports = {
         }
       });
 
+      client.on("error", function(e) {
+        throw e;
+      });
+
       client.on("connect", function() {
         callback(client);
       });

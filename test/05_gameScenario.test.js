@@ -31,16 +31,18 @@ describe("Game Scenario", function() {
   it("should init correctly", function(done) {
 
     var login = function() {
-      clients[0].on("loginResult", create);
+      clients[0].on("loginResult", function() {
+        setTimeout(create, 500);
+      });
       for(var i = 0; i < 5; i++) {
-          clients[i].emit("login", {username: "p" + i, password: __conf.password});
+        clients[i].emit("login", {username: "p" + i, password: __conf.password});
       }
     };
 
     var create = function() {
       clients[1].on("roomCreated", function(room) {
           roomId = room.id;
-          join();
+          setTimeout(join, 500);
       });
       clients[0].emit("createRoom", {name: "Test Room", type: "raw"});
     };
