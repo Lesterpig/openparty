@@ -3,7 +3,7 @@ Changelog
 
 v0.3.0
 ------
-2017-xx-xx
+2017-10-25
 
 - Add ingame smooth reconnection (#36)
 - Upgrade dependencies to latest versions
