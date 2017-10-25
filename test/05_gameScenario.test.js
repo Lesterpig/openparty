@@ -400,7 +400,7 @@ describe("Game Scenario", function() {
     it("should change the stage duration", function(done) {
       var room = require("../lib/rooms").rooms[0];
       clients[0].on("setTimer", function(duration) {
-        equals(1, duration);
+        assert(duration > new Date().getTime());
         var r = room.getRemainingTime();
         assert(500 < r && r <= 1000);
         done();

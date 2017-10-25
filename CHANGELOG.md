@@ -1,6 +1,17 @@
 Changelog
 =========
 
+v0.3.0
+------
+2017-xx-xx
+
+- Add ingame smooth reconnection (#36)
+- Upgrade dependencies to latest versions
+- Improve timestamp display
+- Add a notice if someone wants to play in a full room (#35)
+- Add the ability to click on links in pre-game chat (#34)
+- Fix bug (#38)
+
 v0.2.0
 ------
 2016-02-26
