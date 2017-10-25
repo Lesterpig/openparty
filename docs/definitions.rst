@@ -171,6 +171,16 @@ Optional keys
 
   `function (room, player) {}`
 
+.. js:data:: 'onReconnect'
+
+  `function (room, player) {}`
+
+.. js:data:: 'reconnectDelay'
+
+  `Integer`
+
+  After a disconnection, a player has this delay (in second) to reconnect. Use -1 to disable reconnection. Defaults to one minute.
+
 .. js:data:: 'sounds'
 
   `Array[Sound]`

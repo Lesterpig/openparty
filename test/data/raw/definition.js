@@ -73,6 +73,7 @@ module.exports = function() {
     minPlayers: 4,
     maxPlayers: 6,
     firstStage: "stageA",
+    reconnectDelay: 1,
 
     sounds: [
       {id: "sound", path: "sound.mp3"}
@@ -144,6 +145,11 @@ module.exports = function() {
     init: function() {},
 
     onDisconnect: function(room, player) {
+      if(player.room !== room)
+        throw new Error("Invalid callback");
+    },
+
+    onReconnect: function(room, player) {
       if(player.room !== room)
         throw new Error("Invalid callback");
     },

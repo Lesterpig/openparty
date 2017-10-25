@@ -442,15 +442,26 @@ describe("Game Scenario", function() {
 
   describe("Disconnection", function() {
 
-    it("should handle ingame disconnections", function(done) {
+    it("should handle ingame reconnections", function(done) {
       var room   = require("../lib/rooms").rooms[0];
-      var player = room.resolveUsername("p3").player;
-      clients[3].disconnect();
+      var player = room.resolveUsername("p1").player;
+      clients[1].disconnect();
       setTimeout(function() {
         player.emit("this message will not crash");
+        assert(player.disconnected);
+        clients[1].connect();
+        clients[1].emit("login", {username: "p1", password: __conf.password});
+      }, 100);
+      clients[1].on("gameStarted", done);
+    });
+
+    it("should handle ingame disconnections", function(done) {
+      var room   = require("../lib/rooms").rooms[0];
+      clients[3].disconnect();
+      setTimeout(function() {
         assert(null === room.resolveUsername("p3"));
         done();
-      }, 100);
+      }, 1100);
     });
 
     it("should not leave if not in room", function() {

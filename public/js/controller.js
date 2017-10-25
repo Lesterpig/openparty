@@ -1,13 +1,19 @@
 angular.module('openparty', [
-  'btford.socket-io',
-  'ngSanitize',
-  'luegg.directives', //for scrollGlue directive
-  'ngAudio'
+    'btford.socket-io',
+    'ngSanitize',
+    'luegg.directives', //for scrollGlue directive
+    'ngAudio'
 ]).
+filter('parseUrlFilter', function () { // the "linky" filter is not suitable due to the html sanitization
+  var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/gi;
+  return function (text, target) {
+    return text.replace(urlPattern, '<a target="' + target + '" href="$&">$&</a>');
+  };
+}).
 factory('socket', function (socketFactory) {
   return socketFactory();
 }).
-controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function ($scope, socket, $interval, ngAudio) {
+controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', 'crypto', function ($scope, socket, $interval, ngAudio, crypto) {
 
   // Server data (served on login)
 
@@ -26,7 +32,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   $scope.selectedRoom     = null;
   $scope.localParams      = [];
   $scope.isMaster         = false;
-  $scope.showMasterParams = true;
+  $scope.showMasterParams = false;
 
   // Game Chats
 
@@ -38,7 +44,9 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   // Timer
 
   $scope.timer         = null;
-  $scope.remainingTime = {raw: 0, min: '--', sec: '--'};
+  $scope.timerStart    = null;
+  $scope.timerDuration = null;
+  $scope.remainingTime = {min: '--', sec: '--'};
 
   // Actions
 
@@ -48,9 +56,13 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   // Local data
 
   $scope.playersInfos = {};
-  $scope.username     = window.location.hash ? window.location.hash.substr(1) : '';
+  $scope.authUsername = localStorage['PGP_Username'];
+  $scope.username     = $scope.authUsername || (window.location.hash ? window.location.hash.substr(1) : '');
   $scope.audio        = {};
   $scope.mute         = localStorage['mute'];
+  var availableThemes = ['default', 'darkly'];
+  $scope.theme        = +localStorage['theme'] || 0;
+  $scope.overlay      = '';
 
   if($scope.mute === 'on') {
     ngAudio.mute();
@@ -89,9 +101,38 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     $scope.invalidRoomPassword = false;
   };
 
+  $scope.changeTheme = function(n) {
+    if(n === undefined) {
+      localStorage['theme'] = $scope.theme = ($scope.theme + 1) % availableThemes.length;
+    }
+    // Doing a raw update to optimize refresh
+    document.getElementById('stylesheet').href = 'css/bootstrap.' + availableThemes[$scope.theme] + '.min.css';
+  };
+  $scope.changeTheme($scope.theme); // Initial call
+
   // UP
   $scope.loginSubmit = function() {
-    socket.emit('login', {username: $scope.username, password: $scope.password});
+    var req = {username: $scope.username, password: $scope.password};
+
+    if($scope.authUsername !== $scope.username) {
+      $scope.authUsername = '';
+    }
+
+    if($scope.authUsername) {
+      crypto.getChallengeResponse($scope.challenge).then(function(data) {
+        req.key = data.key;
+        req.message = data.message;
+        socket.emit('login', req);
+      }, function() {
+        socket.emit('login', req);
+      });
+    } else {
+      socket.emit('login', req);
+    }
+  };
+
+  $scope.logout = function() {
+    socket.emit('logout');
   };
 
   $scope.createRoom = function() {
@@ -144,6 +185,20 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     socket.emit('executeAction', data);
   };
 
+  $scope.register = function() {
+   $scope.registering = true;
+   crypto.generateKey($scope.username).then(function() {
+    $scope.registered = true;
+   });
+  };
+
+  $scope.unregister = function() {
+    if(confirm('Confirm?')) {
+      delete localStorage['PGP_Username'];
+      $scope.overlay = $scope.authUsername = '';
+    }
+  };
+
   $interval(function() {
     $scope.lastPing = new Date().getTime();
     socket.emit('o-ping');
@@ -178,6 +233,15 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     $scope.users = c;
   });
 
+  socket.on('challenge', function(c) {
+    $scope.challenge = c;
+  });
+
+  socket.on('reconnectInvitation', function(username) {
+    $scope.username = username;
+    $scope.loginSubmit();
+  });
+
   socket.on('loginResult', function(o) {
     if(o.err) {
       $scope.loginError = 'has-error';
@@ -189,7 +253,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     window.location = window.location.origin + '/#' + $scope.username;
 
     $scope.gametypes = o.gametypes;
-    for(i in o.gametypes) {
+    for(var i in o.gametypes) {
       $scope.roomType = i; break;
     }
     $scope.status = 1;
@@ -244,6 +308,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   socket.on('roomJoined', function(room) {
     $scope.joinedRoom = room;
     $scope.isMaster = false;
+    $scope.preChat = '';
     updateLocalParameters(room);
     $scope.updateTitle();
 
@@ -278,16 +343,14 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   socket.on('chatMessage', function(data) {
 
     if(data.sender)
-      data.sender = '<strong>' + data.sender + '</strong> : ';
+      data.sender = getDate() + ' <strong>' + data.sender + '</strong> : ';
     else
       data.sender = '';
 
-    if(!$scope.joinedRoom.started)
-      $scope.preChat += getDate() + ' ' + data.sender + data.message + '\n';
-
-    else {
+    if(!$scope.joinedRoom || !$scope.joinedRoom.started && !data.lobby)
+      $scope.preChat += data.sender + data.message + '\n';
+    else if(!data.lobby)
       $scope.gameChat += data.sender + data.message + '<br />';
-    }
   });
 
   socket.on('setAllowedChannels', function(data) {
@@ -336,8 +399,9 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
 
   socket.on('setTimer', function(data) {
     $interval.cancel($scope.timer);
-    $scope.remainingTime.raw = +data;
-    $scope.timer = $interval($scope.writeTimer, 1000);
+    $scope.timerDuration = +data;
+    $scope.timerStart = new Date().getTime();
+    $scope.timer = $interval($scope.writeTimer, 200);
     $scope.writeTimer();
   });
 
@@ -349,7 +413,7 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
 
   socket.on('setAvailableActions', function(data) {
     $scope.actions = data;
-    for(action in $scope.actions) {
+    for(var action in $scope.actions) {
       if($scope.actions[action].type === 'select') {
         if($scope.actions[action].options.safeChoices.length >= 1)
           $scope.actionsValues[action] = $scope.actions[action].options.safeChoices[0];
@@ -370,9 +434,14 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   });
 
   socket.on('playSound', function(data) {
+    if($scope.mute === 'on'){
+      return;
+    }
+
     if(!data.id){
       data = {id: data};
     }
+
     if(!$scope.audio[data.id]) {
       $scope.audio[data.id] = ngAudio.play(data.path);
     } else {
@@ -380,13 +449,11 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     }
     var sound = $scope.audio[data.id];
 
+    sound.pausing = false;
     if(data.loop !== undefined)
       sound.loop = data.loop;
-    if(data.volume !== undefined && $scope.mute !== 'on')
+    if(data.volume !== undefined)
       sound.setVolume(data.volume);
-
-    sound.muting.setMuting($scope.mute === 'on');
-    sound.pausing = false; // Not sure we need this, but couple of strange bugs without...
   });
 
   socket.on('stopSound', function(data) {
@@ -400,7 +467,8 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
 
   $scope.writeTimer = function() {
 
-    var time = $scope.remainingTime.raw--;
+    var now = new Date().getTime();
+    var time = Math.round($scope.timerDuration - (now - $scope.timerStart) / 1000);
 
     if(time <= 0) {
       $scope.remainingTime.min = '--';
@@ -423,10 +491,45 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
   $scope.toggleMute = function() {
     $scope.mute = ($scope.mute === 'on' ? 'off' : 'on');
     localStorage['mute'] = $scope.mute;
-    for(var sound in $scope.audio) {
-      $scope.audio[sound].muting = ($scope.mute === 'on');
-    }
   };
+
+  /** Authentication management **/
+
+  var fingerprints = localStorage['fingerprints'];
+  fingerprints = fingerprints ? JSON.parse(fingerprints) : {};
+
+  // TODO This function is to be called many times. We should find a way to cache result in $scope or somewhere else...
+  $scope.checkAuth = function(player) {
+    if(player.username === $scope.username || !player.authentication)
+      return 'none';
+
+    var saved = fingerprints[player.authentication.username];
+    if(!saved)
+      return 'unknown';
+
+    if(player.authentication.fingerprint === saved)
+      return 'ok';
+
+    return 'ko';
+  };
+
+  $scope.askFriend = function(player, remove) {
+    $scope.friend  = player.authentication;
+    $scope.overlay = remove ? 'rmFriend' : 'addFriend';
+  };
+
+  $scope.printIdentity = function() {
+    $scope.exportData = crypto.exportData();
+    $scope.overlay = 'registrationInfo';
+  };
+
+  $scope.setFriend = function(remove) {
+    fingerprints[$scope.friend.username] = remove ? '' : $scope.friend.fingerprint;
+    localStorage['fingerprints'] = JSON.stringify(fingerprints);
+    $scope.overlay = false;
+  };
+
+  $scope.import = crypto.importData;
 
   /** PRIVATE **/
 
@@ -445,11 +548,13 @@ controller('controller', ['$scope', 'socket', '$interval', 'ngAudio', function (
     var date = new Date();
     var h    = date.getHours();
     var i    = date.getMinutes();
+    var j    = date.getSeconds();
 
     if(h < 10) h = '0' + h;
     if(i < 10) i = '0' + i;
+    if(j < 10) j = '0' + j;
 
-    return '['+h+':'+i+']';
+    return '['+h+':'+i+':'+j+']';
   }
 
 
